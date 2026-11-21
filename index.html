@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Samia">
+<meta name="theme-color" content="#d4c0f0">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-180.png">
+<title>Samia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Noto+Naskh+Arabic:wght@500;700&family=Amiri+Quran&display=swap" rel="stylesheet">
+<style>
+/* VOICE: joyeux, doux, encourageant — un cahier d'enfant soigné
+   IDEA: le lawh, planchette de bois des écoles coraniques, posée sur un tapis bleu lapis
+   PICTURE: chaque onglet est l'objet même : grille de lettres, planche à tracer, page de mushaf encadrée d'or
+   COLOUR and TYPE: sable + lapis + safran ; Baloo 2, Noto Naskh Arabic, Amiri Quran
+   LAYOUT: titre modeste, onglets, activité au centre ; une colonne sur téléphone */
+:root{color-scheme:light dark;
+--bg:light-dark(#fbf1dc,#0f1a2e);--card:light-dark(#fffaf0,#18284a);--ink:light-dark(#1d2440,#f3ead6);
+--mute:light-dark(#5d6380,#b7b9cc);--lapis:light-dark(#2448a6,#5b80e0);--head:light-dark(#2448a6,#1a2f63);
+--saf:#f5a623;--wood:light-dark(#d9a066,#8a5a32);--wood2:light-dark(#c4874b,#6e4526);--ok:#1e9e62;--no:#d9483b;
+--line:light-dark(#ecdcb8,#2a3c66)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 "Baloo 2",system-ui,sans-serif;overflow-x:clip}
+.ar{font-family:"Noto Naskh Arabic","Amiri",serif;direction:rtl;unicode-bidi:isolate}
+.q{font-family:"Amiri Quran","Amiri","Noto Naskh Arabic",serif;direction:rtl;unicode-bidi:isolate}
+header{background:var(--head);color:#fff;padding:16px max(5vw,16px) 0}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:1100px;margin:auto;flex-wrap:wrap}
+h1{margin:0;font-size:clamp(26px,5vw,38px);line-height:1.05;font-weight:800}
+h1 span{font-family:"Noto Naskh Arabic",serif;margin-inline-start:8px}
+.badge{display:inline-block;font-size:14px;background:var(--saf);color:#2b1a00;border-radius:99px;padding:2px 12px;margin-inline-start:8px;vertical-align:middle}
+.stars{background:rgba(255,255,255,.16);border-radius:99px;padding:6px 16px;font-weight:700;white-space:nowrap}
+.stars b{color:var(--saf)}
+nav{display:flex;gap:6px;max-width:1100px;margin:14px auto 0;overflow-x:auto;scrollbar-width:none}
+nav a{flex:1 0 auto;text-align:center;text-decoration:none;color:#fff;font-weight:700;font-size:16px;padding:11px 14px;border-radius:18px 18px 0 0;background:rgba(255,255,255,.12);min-height:46px;white-space:nowrap}
+nav a[aria-current]{background:var(--bg);color:var(--lapis)}
+main{max-width:1100px;margin:auto;padding:22px max(4vw,14px) 48px}
+section{display:none}section.on{display:block}
+h2{font-size:clamp(24px,4vw,32px);line-height:1.1;margin:0 0 4px}
+h3{margin:0 0 6px;font-size:22px}
+.lead{color:var(--mute);margin:0 0 18px;max-width:62ch}
+button,.btn{font:inherit;cursor:pointer;border:0;border-radius:16px;min-height:48px;padding:8px 18px;font-weight:700;background:var(--card);color:var(--ink);box-shadow:0 3px 0 var(--line);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--saf);outline-offset:2px}
+button:active{transform:translateY(2px);box-shadow:0 1px 0 var(--line)}
+button:disabled{opacity:.45;cursor:default}
+.pri{background:var(--lapis);color:#fff;box-shadow:0 3px 0 #16307a}
+.gold{background:var(--saf);color:#2b1a00;box-shadow:0 3px 0 #b87700}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.card{background:var(--card);border-radius:28px;padding:clamp(16px,3vw,24px);box-shadow:0 6px 0 var(--line);margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px;direction:rtl}
+.tile{aspect-ratio:1;display:grid;place-items:center;position:relative;background:var(--card);border-radius:20px;box-shadow:0 4px 0 var(--line);padding:0}
+.tile .ar{font-size:44px;line-height:1}
+.tile small{position:absolute;bottom:6px;left:0;right:0;font-size:13px;color:var(--mute);direction:ltr}
+.tile.seen::after{content:"★";position:absolute;top:4px;right:8px;color:var(--saf);font-size:16px}
+.detail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px}
+.big{font-size:clamp(110px,22vw,180px);line-height:1.2;text-align:center;color:var(--lapis);background:var(--bg);border-radius:22px}
+.forms{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;direction:rtl;margin:12px 0}
+.forms div{background:var(--bg);border-radius:14px;text-align:center;padding:6px 2px}
+.forms .ar{font-size:38px;display:block;line-height:1.5}
+.forms small{font-size:13px;color:var(--mute)}
+.say{font-family:"Noto Naskh Arabic",serif;font-size:32px;padding:2px 14px;line-height:1.5;flex-direction:column;gap:0}
+.say small{font-family:"Baloo 2";font-size:14px;line-height:1;color:var(--mute)}
+.ex{display:flex;gap:8px;flex-wrap:wrap;direction:rtl;margin:10px 0}
+.board{background:linear-gradient(180deg,var(--wood),var(--wood2));border-radius:30px;padding:16px;box-shadow:0 8px 0 rgba(0,0,0,.18)}
+.board canvas{display:block;width:100%;height:min(60vh,430px);background:#fdf6e6;border-radius:20px;touch-action:none;cursor:crosshair}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.seg button[aria-pressed=true]{background:var(--lapis);color:#fff;box-shadow:0 3px 0 #16307a}
+.msg{min-height:30px;font-weight:700;font-size:20px;margin:10px 0}
+.ok{color:var(--ok)}.bad{color:var(--no)}
+.quiz{text-align:center}
+.ask{font-size:24px;margin:4px 0 14px}.ask .ar,.ask .q{font-size:clamp(64px,16vw,110px);line-height:1.4;color:var(--lapis);display:block}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:520px;margin:auto}
+.opts button{min-height:80px;font-size:22px}.opts button .ar{font-size:50px;line-height:1}
+.right{background:var(--ok)!important;color:#fff!important}.wrong{background:var(--no)!important;color:#fff!important}
+.bar{height:14px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--saf);transition:width .4s}
+.memo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:560px;margin:auto}
+.memo button{aspect-ratio:1;font-size:20px;padding:4px}.memo .ar{font-size:44px}
+.memo .back{background:var(--lapis);color:transparent}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:18px}
+.sc{flex-direction:column;align-items:stretch;text-align:start;padding:12px 14px;gap:4px;border-radius:20px}
+.sc .ar{font-size:24px}.sc small{color:var(--mute);font-weight:500}
+.sc[aria-pressed=true]{outline:3px solid var(--lapis)}
+.mushaf{border:3px solid var(--saf)}
+.basm{text-align:center;font-size:clamp(26px,5vw,36px);color:var(--lapis);margin:4px 0 12px}
+.ayah{border-top:1px dashed var(--line);padding:12px 4px;cursor:pointer}
+.ayah .q,.verse{font-size:clamp(28px,5.5vw,40px);line-height:1.9;text-align:right}
+.tr{color:var(--mute);font-size:16px;font-style:italic}
+.num{display:inline-grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;border:2px solid var(--saf);font-size:.55em;margin-inline:6px;vertical-align:middle;font-family:"Baloo 2"}
+.hid{color:transparent!important;background:var(--line);border-radius:10px;user-select:none}
+.order{margin-top:14px;background:var(--bg);border-radius:20px;padding:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;direction:rtl;margin-top:10px}
+.chips button{font-family:"Amiri Quran","Amiri",serif;font-size:26px;line-height:1.6;padding:0 14px}
+.built{min-height:64px;font-size:28px;text-align:right;background:var(--card);border-radius:14px;padding:6px 12px;line-height:1.8}
+.steps{display:grid;gap:8px;margin:14px 0}
+.step{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--bg);border-radius:16px;padding:10px 12px}
+.step b{flex:1 1 180px}.step.done b::before{content:"✓ ";color:var(--ok)}
+.step.cur{outline:3px solid var(--saf)}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.dots span{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:14px;background:var(--line)}
+.dots .d{background:var(--ok);color:#fff}.dots .c{outline:3px solid var(--saf)}
+.lock{border:3px dashed var(--saf);text-align:center}
+.lock ul{text-align:start;max-width:520px;margin:10px auto}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.stat{background:var(--bg);border-radius:18px;padding:12px}.stat b{display:block;font-size:30px;line-height:1.1;color:var(--lapis)}
+table{width:100%;border-collapse:collapse}td,th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:start}
+input,select{font:inherit;font-size:16px;min-height:48px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink);padding:6px 12px}
+.overlay{position:fixed;inset:0;background:rgba(10,20,40,.6);display:none;place-items:center;padding:16px;z-index:9}
+.overlay.on{display:grid}
+.diploma{background:#fffaf0;color:#1d2440;max-width:520px;width:100%;border-radius:24px;padding:28px;text-align:center;border:8px double var(--saf)}
+.diploma .q{font-size:40px;color:#2448a6}
+a{color:var(--lapis)}
+.hbtn{background:rgba(255,255,255,.16);color:#fff;box-shadow:none;min-height:40px;padding:4px 14px}
+.hbtn[aria-pressed=true]{background:var(--saf);color:#2b1a00}
+.home{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-bottom:22px}
+.hcard{flex-direction:column;align-items:flex-start;text-align:start;padding:18px 20px;border-radius:26px;min-height:150px;gap:4px;font-size:18px}
+.hcard .ar{font-size:46px;line-height:1.2;color:var(--lapis)}.hcard span:last-child{font-weight:500;color:var(--mute);font-size:16px}
+.hcard.coran{background:var(--lapis);color:#fff;box-shadow:0 5px 0 #16307a}.hcard.coran .ar,.hcard.coran span:last-child{color:#fff}
+details.help{background:var(--card);border:2px solid var(--saf);border-radius:20px;padding:6px 16px;margin-bottom:16px}
+details.help summary{cursor:pointer;font-weight:800;min-height:44px;display:flex;align-items:center}
+details.help ol{margin:6px 0 12px;padding-inline-start:22px}details.help li{margin:4px 0}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.fact{background:var(--card);border-radius:20px;padding:14px 16px;box-shadow:0 4px 0 var(--line)}
+.fact b{display:block;font-size:20px;color:var(--lapis)}
+.player{position:sticky;top:0;z-index:3;background:var(--card);border-radius:18px;padding:10px;margin-bottom:10px;box-shadow:0 4px 0 var(--line)}
+.ayah.playing{background:light-dark(#fff1cf,#2a3a63);border-radius:14px}
+.ayah .fr{font-size:16px;margin-top:2px}
+.play{min-height:44px;padding:4px 14px}
+.infos{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:6px 0 12px}
+.infos span{background:var(--bg);border-radius:99px;padding:4px 14px;font-size:15px}
+html.xl body{font-size:20px}html.xl .tr,html.xl .ayah .fr,html.xl .note{font-size:19px}
+html.xl .ayah .q,html.xl .verse{font-size:clamp(34px,7vw,50px)}html.xl button,html.xl .btn{min-height:56px;font-size:19px}
+
+.rainbow{display:none;height:8px;background:linear-gradient(90deg,#ff4f9a,#ff9f43,#ffd93d,#5ed16b,#4dabf7,#9775fa)}
+html.gift .rainbow{display:block}
+html.gift{--bg:light-dark(#fff2f8,#24101d);--card:light-dark(#ffffff,#3a1830);--lapis:light-dark(#d6336c,#ff8cc0);--head:light-dark(#e64995,#5c1a44);--line:light-dark(#ffd3e7,#5a2a4a);--ink:light-dark(#3b1030,#ffe8f3);--mute:light-dark(#8a4a6e,#e0b3cc)}
+html.gift header{background:linear-gradient(135deg,var(--head),light-dark(#ff86bd,#7a2459))}
+html.gift .pri,html.gift .seg button[aria-pressed=true],html.gift .surahs button[aria-pressed=true]{box-shadow:0 3px 0 light-dark(#a0224f,#b8457a)}
+html.gift .pri{color:light-dark(#fff,#2a0c1f)}
+html.gift .mushaf,html.gift .lock{border:5px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box,linear-gradient(90deg,#ff4f9a,#ff9f43,#ffd93d,#5ed16b,#4dabf7,#9775fa) border-box}
+html.gift .hcard.coran{background:linear-gradient(135deg,#ff4f9a,#9775fa);box-shadow:0 5px 0 #a0224f}
+html.gift .board{background:linear-gradient(90deg,#ff4f9a,#ff9f43,#ffd93d,#5ed16b,#4dabf7,#9775fa)}
+html.gift .bar i{background:linear-gradient(90deg,#ff4f9a,#ff9f43,#ffd93d,#5ed16b,#4dabf7,#9775fa)}
+html.gift .tile:nth-child(6n+1) .ar{color:#ff4f9a}html.gift .tile:nth-child(6n+2) .ar{color:#f08c00}html.gift .tile:nth-child(6n+3) .ar{color:#e0a800}
+html.gift .tile:nth-child(6n+4) .ar{color:#2f9e44}html.gift .tile:nth-child(6n+5) .ar{color:#1c7ed6}html.gift .tile:nth-child(6n) .ar{color:#7048e8}
+html.gift .diploma{border:10px solid transparent;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(90deg,#ff4f9a,#ff9f43,#ffd93d,#5ed16b,#4dabf7,#9775fa) border-box}
+html.gift .dots .d{background:#ff4f9a}
+.welcome{background:var(--card);color:var(--ink);max-width:460px;width:100%;border-radius:28px;padding:28px;text-align:center;border:6px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box,linear-gradient(90deg,#ff4f9a,#ff9f43,#ffd93d,#5ed16b,#4dabf7,#9775fa) border-box}
+.welcome .gift-ico{font-size:64px;line-height:1}
+.welcome input{width:100%;margin:12px 0;text-align:center;font-size:22px}
+.voice{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:8px}
+.voice button[aria-pressed=true]{background:var(--lapis);color:#fff}
+
+html.gift,html.gift[data-theme=dark]{color-scheme:light;--bg:#f6f1fb;--card:#ffffff;--ink:#33224a;--mute:#6f5f86;--lapis:#7c4dbb;--head:#e4d6f5;--line:#e6dcf3}
+html.gift body{background:linear-gradient(180deg,#f6f1fc 0%,#ede4f9 50%,#e4d8f5 100%);background-attachment:fixed;min-height:100vh}
+html.gift header{background:linear-gradient(120deg,#e2d3f6,#d4c0f0 55%,#c8b1eb);color:#2e1d45}
+html.gift nav a{color:#4b3270;background:rgba(255,255,255,.45)}
+html.gift nav a[aria-current]{background:#efe6fa;color:#6a3fb0}
+html.gift .stars,html.gift .hbtn{background:rgba(255,255,255,.65);color:#2e1d45}
+html.gift .hbtn[aria-pressed=true]{background:#ffd93d}
+html.gift .card,html.gift .tile,html.gift .fact,html.gift button:not(.pri):not(.gold):not(.right):not(.wrong):not(.back){box-shadow:0 3px 0 #ddd0f2,0 8px 20px rgba(90,50,150,.07)}
+html.gift .pri{background:linear-gradient(135deg,#9b6fd6,#7c4dbb);color:#fff;box-shadow:0 3px 0 #5a3392}
+html.gift .seg button[aria-pressed=true],html.gift .voice button[aria-pressed=true]{background:#7c4dbb;color:#fff;box-shadow:0 3px 0 #5a3392}
+html.gift .hcard.coran{background:linear-gradient(135deg,#a77fe0,#7c4dbb);box-shadow:0 5px 0 #5a3392}
+html.gift .board{background:linear-gradient(90deg,#ffb3d1,#ffd8a8,#fff3a3,#b2f2bb,#a5d8ff,#d0bfff)}
+html.gift .board canvas{background:#fffdf7}
+html.gift details.help{border-color:#cdb8ee}
+html.gift .overlay{background:rgba(120,90,170,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+html.gift .ayah.playing{background:#f1e8fd}
+html.gift .dots .d{background:#7c4dbb}
+html.gift .welcome{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(90deg,#ff4f9a,#ff9f43,#ffd93d,#5ed16b,#4dabf7,#9775fa) border-box;color:#33224a}
+.hello{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#fff;border-radius:24px;padding:14px 18px;margin-bottom:18px;box-shadow:0 3px 0 #f8dbe8}
+.hello button{font-size:18px}
+@keyframes wave{0%,100%{transform:rotate(0)}25%{transform:rotate(18deg)}75%{transform:rotate(-12deg)}}
+.hello .hand{font-size:40px;display:inline-block;transform-origin:70% 80%;animation:wave 1.6s ease-in-out 2}
+
+.note{font-size:14px;color:var(--mute);margin-top:14px}
+@media(max-width:700px){.detail{grid-template-columns:minmax(0,1fr)}nav a{font-size:15px;padding:10px 12px}.memo{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@keyframes pop{50%{transform:scale(1.15)}}.pop{animation:pop .35s}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <h1>Samia <span>سَامِيَة</span><span class="badge" id="edition"></span></h1>
+    <div class="row"><button id="bigBtn" class="hbtn" aria-pressed="false" title="Texte plus grand">Aa+</button>
+    <div class="stars" aria-live="polite"><span id="who"></span> <b id="starCount">0</b> ★</div></div>
+  </div>
+  <nav aria-label="Activités" id="nav"></nav>
+</header>
+<div class="rainbow" aria-hidden="true"></div>
+<main>
+  <section id="v-accueil">
+    <h2 id="hello">Assalâmou ʿalaykoum !</h2>
+    <p class="lead">Que veux-tu faire aujourd'hui ? Touche une grande carte.</p>
+    <div class="home">
+      <a class="btn hcard coran" href="#coran"><span class="ar">القُرْآن</span><b>J'apprends le Coran</b><span>Écouter, répéter, réciter par cœur</span></a>
+      <a class="btn hcard" href="#islam"><span class="ar">دُعَاء</span><b>Douas et prière</b><span>Invocations, ablutions, 99 noms, prophètes</span></a>
+      <a class="btn hcard" href="#lettres"><span class="ar">ا ب ت</span><b>Les lettres</b><span>Écouter les 28 lettres</span></a>
+      <a class="btn hcard" href="#ecrire"><span class="ar">✍</span><b>J'écris</b><span>Tracer les lettres avec le doigt</span></a>
+      <a class="btn hcard" href="#jouer"><span class="ar">★</span><b>Je joue</b><span>Gagner des étoiles</span></a>
+      <a class="btn hcard" href="#lire"><span class="ar">بَا بِي بُو</span><b>Je lis</b><span>Les voyelles, pas à pas</span></a>
+      <a class="btn hcard" href="#tajwid"><span class="ar">تَجْوِيد</span><b>Le tajwid</b><span>Les règles pour bien réciter</span></a>
+    </div>
+    <details class="help" open><summary>Comment ça marche ? (à lire une fois)</summary><ol>
+      <li><b>Pas besoin de savoir lire l'arabe.</b> Sous chaque verset, il y a la prononciation en lettres de chez nous et le sens en français.</li>
+      <li>Touche <b>▶</b> pour entendre un récitateur (Mishary Alafasy). Répète après lui, à voix haute.</li>
+      <li>Les textes sont trop petits ? Touche <b>Aa+</b> en haut de l'écran.</li>
+      <li>Pour apprendre une sourate par cœur : <b>Coran</b> → choisis une sourate → <b>Apprendre</b>. L'appli te guide verset par verset.</li>
+      <li>Chaque réussite donne des <b>étoiles ★</b>. Quand une sourate est sue, on reçoit un diplôme.</li>
+      <li>Dans <b>Douas et prière</b> : les invocations de tous les jours, les ablutions et la prière pas à pas.</li>
+      <li>Grand-parent et enfant peuvent apprendre ensemble : l'un écoute, l'autre récite, puis on échange.</li>
+    </ol></details>
+    <h2 style="margin-top:22px">Le savais-tu ?</h2><div class="facts" id="facts"></div>
+  </section>
+
+  <section id="v-lettres">
+    <details class="help"><summary>Comment faire ?</summary><ol><li>Touche une lettre en bas.</li><li>Touche <b>🔊 Écouter</b> et répète son nom à voix haute.</li><li>Regarde ses 4 formes : la lettre change un peu selon sa place dans le mot.</li></ol></details>
+    <div class="card detail" id="detail"></div>
+    <h2>Les 28 lettres</h2>
+    <p class="lead">L'arabe se lit de droite à gauche. Touche une lettre pour l'écouter et voir ses 4 formes.</p>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="v-lire"><div id="lireBox"></div></section>
+
+  <section id="v-ecrire">
+    <h2>J'écris : <span class="ar" id="trLetter"></span> <span id="trName"></span></h2>
+    <details class="help"><summary>Comment faire ?</summary><ol><li>Pose ton doigt sur la lettre grise et suis-la, sans lever le doigt si possible.</li><li>Touche <b>J'ai fini !</b> : l'appli te dit si c'est réussi.</li><li><b>Effacer</b> pour recommencer, <b>Suivante</b> pour changer de lettre.</li></ol></details>
+    <p class="lead">Avec ton doigt, repasse sur la lettre grise. Commence par la droite, comme en arabe.</p>
+    <div class="seg" id="formSeg"></div>
+    <div class="board"><canvas id="cv" aria-label="Planche pour tracer la lettre"></canvas></div>
+    <div class="msg" id="trMsg" aria-live="polite"></div>
+    <div class="row">
+      <button id="trPrev">← Avant</button>
+      <button class="gold" id="trCheck">J'ai fini !</button>
+      <button id="trClear">Effacer</button>
+      <button class="pri" id="trNext">Suivante →</button>
+    </div>
+  </section>
+
+  <section id="v-jouer">
+    <h2>Les jeux</h2>
+    <p class="lead">Chaque bonne réponse te donne une étoile. Touche 🔊 pour entendre, puis touche la bonne réponse.</p>
+    <div class="seg" id="gameSeg"></div>
+    <div class="card quiz" id="game"></div>
+  </section>
+
+  <section id="v-coran">
+    <h2>J'apprends le Coran</h2>
+    <details class="help" open><summary>Comment faire ?</summary><ol>
+      <li>Touche une sourate (commence par <b>Al-Fâtiha</b>).</li>
+      <li><b>Écouter</b> : touche ▶ <b>Toute la sourate</b>, ou ▶ à côté d'un verset. Lis la ligne en lettres latines et répète.</li>
+      <li><b>Apprendre</b> : 4 petites étapes pour chaque verset, l'appli te guide.</li>
+      <li><b>Réciter</b> : récite sans regarder. Si tu bloques, touche le verset pour le voir.</li></ol></details>
+    <p class="lead">Écoute, répète, puis apprends verset par verset jusqu'à réciter de mémoire.</p>
+    <div id="revBox"></div>
+    <div class="sgrid" id="surahs"></div>
+    <div class="card mushaf" id="mushaf"></div>
+    <p class="note">Le texte est affiché avec ses voyelles. Pour la prononciation exacte (tajwid), écoute toujours un récitateur et fais-toi corriger par un adulte ou un enseignant.</p>
+  </section>
+
+  <section id="v-islam"><div id="islBox"></div></section>
+  <section id="v-tajwid"><div id="tajBox"></div></section>
+  <section id="v-parents"><div id="parBox"></div></section>
+</main>
+<div class="overlay" id="wel" role="dialog" aria-modal="true" aria-labelledby="welT"><div class="welcome">
+  <div class="gift-ico">🎁</div><h2 id="welT">Un cadeau pour toi, Samia !</h2>
+  <p>Maman a préparé cette appli rien que pour toi, pour apprendre l'arabe et le Coran, avec des enfants qui récitent avec toi. Plein d'étoiles à gagner ★</p>
+  <button class="pri" id="welGo" style="width:100%;font-size:20px;min-height:60px">🎀 Ouvrir mon cadeau</button></div></div>
+<div class="overlay" id="ov" role="dialog" aria-modal="true"><div class="diploma" id="dip"></div></div>
+
+<script>
+{
+const PREMIUM=false,GIFT=true;
+if(GIFT)document.documentElement.classList.add("gift");
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const AR=n=>String(n).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
+const today=()=>new Date().toLocaleDateString("sv");
+const addDays=(d,n)=>{const x=new Date(d+"T12:00");x.setDate(x.getDate()+n);return x.toLocaleDateString("sv")};
+const fmt=d=>new Date(d+"T12:00").toLocaleDateString("fr-FR",{day:"numeric",month:"long"});
+
+/* ================= DONNÉES ================= */
+const L=[
+["ا","Alif","ألف","","أَسَد","lion"],["ب","Bā","باء","b","بَيْت","maison"],["ت","Tā","تاء","t","تُفَّاحَة","pomme"],
+["ث","Thā","ثاء","th","ثَعْلَب","renard"],["ج","Jīm","جيم","j","جَمَل","chameau"],["ح","Ḥā","حاء","ḥ","حِصَان","cheval"],
+["خ","Khā","خاء","kh","خُبْز","pain"],["د","Dāl","دال","d","دُبّ","ours"],["ذ","Dhāl","ذال","dh","ذُرَة","maïs"],
+["ر","Rā","راء","r","رُمَّان","grenade"],["ز","Zāy","زاي","z","زَرَافَة","girafe"],["س","Sīn","سين","s","سَمَكَة","poisson"],
+["ش","Shīn","شين","sh","شَمْس","soleil"],["ص","Ṣād","صاد","ṣ","صَقْر","faucon"],["ض","Ḍād","ضاد","ḍ","ضِفْدَع","grenouille"],
+["ط","Ṭā","طاء","ṭ","طَائِرَة","avion"],["ظ","Ẓā","ظاء","ẓ","ظَرْف","enveloppe"],["ع","ʿAyn","عين","ʿ","عَيْن","œil"],
+["غ","Ghayn","غين","gh","غَيْمَة","nuage"],["ف","Fā","فاء","f","فِيل","éléphant"],["ق","Qāf","قاف","q","قَمَر","lune"],
+["ك","Kāf","كاف","k","كِتَاب","livre"],["ل","Lām","لام","l","لَيْمُون","citron"],["م","Mīm","ميم","m","مَوْز","banane"],
+["ن","Nūn","نون","n","نَجْمَة","étoile"],["ه","Hā","هاء","h","هِلَال","croissant de lune"],["و","Wāw","واو","w","وَرْدَة","rose"],
+["ي","Yā","ياء","y","يَد","main"]];
+const NOJOIN="اذدرزو";
+const forms=c=>NOJOIN.includes(c)?[c,c,"ـ"+c,"ـ"+c]:[c,c+"ـ","ـ"+c+"ـ","ـ"+c];
+const vowels=i=>{const c=i===0?["أَ","إِ","أُ"]:[L[i][0]+"َ",L[i][0]+"ِ",L[i][0]+"ُ"],t=L[i][3];return[[c[0],t+"a"],[c[1],t+"i"],[c[2],t+"ou"]]};
+
+const S=[
+{n:1,fr:"Al-Fâtiha",ar:"الفَاتِحَة",free:1,idea:"L'ouverture : on remercie Allah et on Lui demande de nous guider sur le bon chemin.",v:[
+["بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ","Bismillāhi r-raḥmāni r-raḥīm"],["الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ","Al-ḥamdu lillāhi rabbi l-ʿālamīn"],
+["الرَّحْمَٰنِ الرَّحِيمِ","Ar-raḥmāni r-raḥīm"],["مَالِكِ يَوْمِ الدِّينِ","Māliki yawmi d-dīn"],
+["إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ","Iyyāka naʿbudu wa iyyāka nastaʿīn"],["اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ","Ihdinā ṣ-ṣirāṭa l-mustaqīm"],
+["صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ","Ṣirāṭa lladhīna anʿamta ʿalayhim ghayri l-maghḍūbi ʿalayhim wa lā ḍ-ḍāllīn"]]},
+{n:114,fr:"An-Nâs",ar:"النَّاس",free:1,idea:"On demande à Allah, Roi des hommes, de nous protéger des mauvaises pensées.",v:[
+["قُلْ أَعُوذُ بِرَبِّ النَّاسِ","Qul aʿūdhu bi-rabbi n-nās"],["مَلِكِ النَّاسِ","Maliki n-nās"],["إِلَٰهِ النَّاسِ","Ilāhi n-nās"],
+["مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ","Min sharri l-waswāsi l-khannās"],["الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ","Alladhī yuwaswisu fī ṣudūri n-nās"],
+["مِنَ الْجِنَّةِ وَالنَّاسِ","Mina l-jinnati wa n-nās"]]},
+{n:113,fr:"Al-Falaq",ar:"الفَلَق",free:1,idea:"On demande à Allah de nous protéger de ce qui est mauvais.",v:[
+["قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ","Qul aʿūdhu bi-rabbi l-falaq"],["مِن شَرِّ مَا خَلَقَ","Min sharri mā khalaq"],
+["وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ","Wa min sharri ghāsiqin idhā waqab"],["وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ","Wa min sharri n-naffāthāti fī l-ʿuqad"],
+["وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ","Wa min sharri ḥāsidin idhā ḥasad"]]},
+{n:112,fr:"Al-Ikhlâs",ar:"الإِخْلَاص",free:1,idea:"Allah est Unique, personne ne Lui ressemble.",v:[
+["قُلْ هُوَ اللَّهُ أَحَدٌ","Qul huwa llāhu aḥad"],["اللَّهُ الصَّمَدُ","Allāhu ṣ-ṣamad"],
+["لَمْ يَلِدْ وَلَمْ يُولَدْ","Lam yalid wa lam yūlad"],["وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ","Wa lam yakun lahū kufuwan aḥad"]]},
+{n:111,fr:"Al-Masad",ar:"المَسَد",idea:"Abou Lahab faisait du mal au Prophète ﷺ : ses richesses ne l'ont pas protégé.",v:[
+["تَبَّتْ يَدَا أَبِي لَهَبٍ وَتَبَّ","Tabbat yadā abī lahabin wa tabb"],["مَا أَغْنَىٰ عَنْهُ مَالُهُ وَمَا كَسَبَ","Mā aghnā ʿanhu māluhū wa mā kasab"],
+["سَيَصْلَىٰ نَارًا ذَاتَ لَهَبٍ","Sa-yaṣlā nāran dhāta lahab"],["وَامْرَأَتُهُ حَمَّالَةَ الْحَطَبِ","Wa-mraʾatuhū ḥammālata l-ḥaṭab"],
+["فِي جِيدِهَا حَبْلٌ مِّن مَّسَدٍ","Fī jīdihā ḥablun min masad"]]},
+{n:110,fr:"An-Nasr",ar:"النَّصْر",idea:"Quand l'aide d'Allah arrive, on Le remercie et on Lui demande pardon.",v:[
+["إِذَا جَاءَ نَصْرُ اللَّهِ وَالْفَتْحُ","Idhā jāʾa naṣru llāhi wa l-fatḥ"],["وَرَأَيْتَ النَّاسَ يَدْخُلُونَ فِي دِينِ اللَّهِ أَفْوَاجًا","Wa raʾayta n-nāsa yadkhulūna fī dīni llāhi afwājā"],
+["فَسَبِّحْ بِحَمْدِ رَبِّكَ وَاسْتَغْفِرْهُ إِنَّهُ كَانَ تَوَّابًا","Fa-sabbiḥ bi-ḥamdi rabbika wa-staghfirh, innahū kāna tawwābā"]]},
+{n:109,fr:"Al-Kâfirûn",ar:"الكَافِرُون",idea:"Le musulman n'adore qu'Allah ; chacun a sa religion.",v:[
+["قُلْ يَا أَيُّهَا الْكَافِرُونَ","Qul yā ayyuhā l-kāfirūn"],["لَا أَعْبُدُ مَا تَعْبُدُونَ","Lā aʿbudu mā taʿbudūn"],
+["وَلَا أَنتُمْ عَابِدُونَ مَا أَعْبُدُ","Wa lā antum ʿābidūna mā aʿbud"],["وَلَا أَنَا عَابِدٌ مَّا عَبَدتُّمْ","Wa lā ana ʿābidun mā ʿabadtum"],
+["وَلَا أَنتُمْ عَابِدُونَ مَا أَعْبُدُ","Wa lā antum ʿābidūna mā aʿbud"],["لَكُمْ دِينُكُمْ وَلِيَ دِينِ","Lakum dīnukum wa liya dīn"]]},
+{n:108,fr:"Al-Kawthar",ar:"الكَوْثَر",idea:"Allah a offert un grand bienfait au Prophète ﷺ ; on prie pour Le remercier.",v:[
+["إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ","Innā aʿṭaynāka l-kawthar"],["فَصَلِّ لِرَبِّكَ وَانْحَرْ","Fa-ṣalli li-rabbika wa-nḥar"],
+["إِنَّ شَانِئَكَ هُوَ الْأَبْتَرُ","Inna shāniʾaka huwa l-abtar"]]},
+{n:107,fr:"Al-Mâʿûn",ar:"المَاعُون",idea:"Être bon avec l'orphelin et le pauvre, et prier avec sincérité.",v:[
+["أَرَأَيْتَ الَّذِي يُكَذِّبُ بِالدِّينِ","Araʾayta lladhī yukadhdhibu bi-d-dīn"],["فَذَٰلِكَ الَّذِي يَدُعُّ الْيَتِيمَ","Fa-dhālika lladhī yaduʿʿu l-yatīm"],
+["وَلَا يَحُضُّ عَلَىٰ طَعَامِ الْمِسْكِينِ","Wa lā yaḥuḍḍu ʿalā ṭaʿāmi l-miskīn"],["فَوَيْلٌ لِّلْمُصَلِّينَ","Fa-waylun li-l-muṣallīn"],
+["الَّذِينَ هُمْ عَن صَلَاتِهِمْ سَاهُونَ","Alladhīna hum ʿan ṣalātihim sāhūn"],["الَّذِينَ هُمْ يُرَاءُونَ","Alladhīna hum yurāʾūn"],
+["وَيَمْنَعُونَ الْمَاعُونَ","Wa yamnaʿūna l-māʿūn"]]},
+{n:106,fr:"Quraysh",ar:"قُرَيْش",idea:"Allah a nourri et protégé la tribu de Quraysh : adorons-Le.",v:[
+["لِإِيلَافِ قُرَيْشٍ","Li-īlāfi quraysh"],["إِيلَافِهِمْ رِحْلَةَ الشِّتَاءِ وَالصَّيْفِ","Īlāfihim riḥlata sh-shitāʾi wa ṣ-ṣayf"],
+["فَلْيَعْبُدُوا رَبَّ هَٰذَا الْبَيْتِ","Fa-l-yaʿbudū rabba hādhā l-bayt"],["الَّذِي أَطْعَمَهُم مِّن جُوعٍ وَآمَنَهُم مِّنْ خَوْفٍ","Alladhī aṭʿamahum min jūʿin wa āmanahum min khawf"]]},
+{n:105,fr:"Al-Fîl",ar:"الفِيل",idea:"L'armée de l'éléphant arrêtée par les oiseaux envoyés par Allah.",v:[
+["أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِأَصْحَابِ الْفِيلِ","A-lam tara kayfa faʿala rabbuka bi-aṣḥābi l-fīl"],["أَلَمْ يَجْعَلْ كَيْدَهُمْ فِي تَضْلِيلٍ","A-lam yajʿal kaydahum fī taḍlīl"],
+["وَأَرْسَلَ عَلَيْهِمْ طَيْرًا أَبَابِيلَ","Wa arsala ʿalayhim ṭayran abābīl"],["تَرْمِيهِم بِحِجَارَةٍ مِّن سِجِّيلٍ","Tarmīhim bi-ḥijāratin min sijjīl"],
+["فَجَعَلَهُمْ كَعَصْفٍ مَّأْكُولٍ","Fa-jaʿalahum ka-ʿaṣfin maʾkūl"]]},
+{n:104,fr:"Al-Humaza",ar:"الهُمَزَة",idea:"Ne pas se moquer des autres et ne pas croire que l'argent rend éternel.",v:[
+["وَيْلٌ لِّكُلِّ هُمَزَةٍ لُّمَزَةٍ","Waylun li-kulli humazatin lumazah"],["الَّذِي جَمَعَ مَالًا وَعَدَّدَهُ","Alladhī jamaʿa mālan wa ʿaddadah"],
+["يَحْسَبُ أَنَّ مَالَهُ أَخْلَدَهُ","Yaḥsabu anna mālahū akhladah"],["كَلَّا لَيُنبَذَنَّ فِي الْحُطَمَةِ","Kallā la-yunbadhanna fi l-ḥuṭamah"],
+["وَمَا أَدْرَاكَ مَا الْحُطَمَةُ","Wa mā adrāka ma l-ḥuṭamah"],["نَارُ اللَّهِ الْمُوقَدَةُ","Nāru llāhi l-mūqadah"],
+["الَّتِي تَطَّلِعُ عَلَى الْأَفْئِدَةِ","Allatī taṭṭaliʿu ʿala l-afʾidah"],["إِنَّهَا عَلَيْهِم مُّؤْصَدَةٌ","Innahā ʿalayhim muʾṣadah"],
+["فِي عَمَدٍ مُّمَدَّدَةٍ","Fī ʿamadin mumaddadah"]]},
+{n:103,fr:"Al-ʿAsr",ar:"العَصْر",idea:"Le temps est précieux : croire, faire le bien, s'encourager à la vérité et à la patience.",v:[
+["وَالْعَصْرِ","Wa l-ʿaṣr"],["إِنَّ الْإِنسَانَ لَفِي خُسْرٍ","Inna l-insāna la-fī khusr"],
+["إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ","Illā lladhīna āmanū wa ʿamilū ṣ-ṣāliḥāti wa tawāṣaw bi-l-ḥaqqi wa tawāṣaw bi-ṣ-ṣabr"]]},
+{n:102,fr:"At-Takâthur",ar:"التَّكَاثُر",idea:"Ne pas passer sa vie à vouloir toujours plus : on sera interrogé sur les bienfaits.",v:[
+["أَلْهَاكُمُ التَّكَاثُرُ","Alhākumu t-takāthur"],["حَتَّىٰ زُرْتُمُ الْمَقَابِرَ","Ḥattā zurtumu l-maqābir"],["كَلَّا سَوْفَ تَعْلَمُونَ","Kallā sawfa taʿlamūn"],
+["ثُمَّ كَلَّا سَوْفَ تَعْلَمُونَ","Thumma kallā sawfa taʿlamūn"],["كَلَّا لَوْ تَعْلَمُونَ عِلْمَ الْيَقِينِ","Kallā law taʿlamūna ʿilma l-yaqīn"],
+["لَتَرَوُنَّ الْجَحِيمَ","La-tarawunna l-jaḥīm"],["ثُمَّ لَتَرَوُنَّهَا عَيْنَ الْيَقِينِ","Thumma la-tarawunnahā ʿayna l-yaqīn"],
+["ثُمَّ لَتُسْأَلُنَّ يَوْمَئِذٍ عَنِ النَّعِيمِ","Thumma la-tusʾalunna yawmaʾidhin ʿani n-naʿīm"]]},
+{n:101,fr:"Al-Qâriʿa",ar:"القَارِعَة",idea:"Le Jour du Jugement, on pèsera les bonnes actions de chacun.",v:[
+["الْقَارِعَةُ","Al-qāriʿah"],["مَا الْقَارِعَةُ","Ma l-qāriʿah"],["وَمَا أَدْرَاكَ مَا الْقَارِعَةُ","Wa mā adrāka ma l-qāriʿah"],
+["يَوْمَ يَكُونُ النَّاسُ كَالْفَرَاشِ الْمَبْثُوثِ","Yawma yakūnu n-nāsu ka-l-farāshi l-mabthūth"],["وَتَكُونُ الْجِبَالُ كَالْعِهْنِ الْمَنفُوشِ","Wa takūnu l-jibālu ka-l-ʿihni l-manfūsh"],
+["فَأَمَّا مَن ثَقُلَتْ مَوَازِينُهُ","Fa-ammā man thaqulat mawāzīnuh"],["فَهُوَ فِي عِيشَةٍ رَّاضِيَةٍ","Fa-huwa fī ʿīshatin rāḍiyah"],
+["وَأَمَّا مَنْ خَفَّتْ مَوَازِينُهُ","Wa ammā man khaffat mawāzīnuh"],["فَأُمُّهُ هَاوِيَةٌ","Fa-ummuhū hāwiyah"],
+["وَمَا أَدْرَاكَ مَا هِيَهْ","Wa mā adrāka mā hiyah"],["نَارٌ حَامِيَةٌ","Nārun ḥāmiyah"]]},
+{n:100,fr:"Al-ʿÂdiyât",ar:"العَادِيَات",idea:"Les chevaux courent fidèlement pour leur maître, mais l'homme oublie souvent de remercier Allah.",v:[
+["وَالْعَادِيَاتِ ضَبْحًا","Wa l-ʿādiyāti ḍabḥā"],["فَالْمُورِيَاتِ قَدْحًا","Fa-l-mūriyāti qadḥā"],["فَالْمُغِيرَاتِ صُبْحًا","Fa-l-mughīrāti ṣubḥā"],
+["فَأَثَرْنَ بِهِ نَقْعًا","Fa-atharna bihī naqʿā"],["فَوَسَطْنَ بِهِ جَمْعًا","Fa-wasaṭna bihī jamʿā"],["إِنَّ الْإِنسَانَ لِرَبِّهِ لَكَنُودٌ","Inna l-insāna li-rabbihī la-kanūd"],
+["وَإِنَّهُ عَلَىٰ ذَٰلِكَ لَشَهِيدٌ","Wa innahū ʿalā dhālika la-shahīd"],["وَإِنَّهُ لِحُبِّ الْخَيْرِ لَشَدِيدٌ","Wa innahū li-ḥubbi l-khayri la-shadīd"],
+["أَفَلَا يَعْلَمُ إِذَا بُعْثِرَ مَا فِي الْقُبُورِ","A-fa-lā yaʿlamu idhā buʿthira mā fi l-qubūr"],["وَحُصِّلَ مَا فِي الصُّدُورِ","Wa ḥuṣṣila mā fi ṣ-ṣudūr"],
+["إِنَّ رَبَّهُم بِهِمْ يَوْمَئِذٍ لَّخَبِيرٌ","Inna rabbahum bihim yawmaʾidhin la-khabīr"]]},
+{n:99,fr:"Az-Zalzala",ar:"الزَّلْزَلَة",idea:"Même le plus petit bien, et le plus petit mal, seront vus.",v:[
+["إِذَا زُلْزِلَتِ الْأَرْضُ زِلْزَالَهَا","Idhā zulzilati l-arḍu zilzālahā"],["وَأَخْرَجَتِ الْأَرْضُ أَثْقَالَهَا","Wa akhrajati l-arḍu athqālahā"],
+["وَقَالَ الْإِنسَانُ مَا لَهَا","Wa qāla l-insānu mā lahā"],["يَوْمَئِذٍ تُحَدِّثُ أَخْبَارَهَا","Yawmaʾidhin tuḥaddithu akhbārahā"],
+["بِأَنَّ رَبَّكَ أَوْحَىٰ لَهَا","Bi-anna rabbaka awḥā lahā"],["يَوْمَئِذٍ يَصْدُرُ النَّاسُ أَشْتَاتًا لِّيُرَوْا أَعْمَالَهُمْ","Yawmaʾidhin yaṣduru n-nāsu ashtātan li-yuraw aʿmālahum"],
+["فَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ خَيْرًا يَرَهُ","Fa-man yaʿmal mithqāla dharratin khayran yarah"],["وَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ شَرًّا يَرَهُ","Wa man yaʿmal mithqāla dharratin sharran yarah"]]},
+{n:97,fr:"Al-Qadr",ar:"القَدْر",idea:"La Nuit du Destin vaut mieux que mille mois.",v:[
+["إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ","Innā anzalnāhu fī laylati l-qadr"],["وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ","Wa mā adrāka mā laylatu l-qadr"],
+["لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ","Laylatu l-qadri khayrun min alfi shahr"],
+["تَنَزَّلُ الْمَلَائِكَةُ وَالرُّوحُ فِيهَا بِإِذْنِ رَبِّهِم مِّن كُلِّ أَمْرٍ","Tanazzalu l-malāʾikatu wa r-rūḥu fīhā bi-idhni rabbihim min kulli amr"],
+["سَلَامٌ هِيَ حَتَّىٰ مَطْلَعِ الْفَجْرِ","Salāmun hiya ḥattā maṭlaʿi l-fajr"]]}];
+const avail=s=>PREMIUM||s.free;
+/* Sens en français, simplifié pour les enfants (ce n'est pas une traduction officielle) */
+const MEAN={
+1:["Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux.","Louange à Allah, Seigneur des mondes.","Le Tout Miséricordieux, le Très Miséricordieux.","Le Maître du Jour du Jugement.","C'est Toi seul que nous adorons, et c'est Toi seul dont nous demandons l'aide.","Guide-nous sur le droit chemin,","le chemin de ceux que Tu as comblés de bienfaits, pas de ceux qui ont mérité Ta colère, ni de ceux qui se sont égarés."],
+114:["Dis : je demande la protection du Seigneur des hommes,","le Roi des hommes,","le Dieu des hommes,","contre le mal du tentateur qui se cache,","qui souffle de mauvaises idées dans le cœur des hommes,","qu'il soit parmi les djinns ou parmi les hommes."],
+113:["Dis : je demande la protection du Seigneur de l'aube,","contre le mal de ce qu'Il a créé,","contre le mal de la nuit quand elle devient très sombre,","contre le mal de celles qui soufflent sur les nœuds (la sorcellerie),","et contre le mal du jaloux quand il est jaloux."],
+112:["Dis : Il est Allah, l'Unique.","Allah, Celui dont tout le monde a besoin.","Il n'a pas d'enfant et Il n'est l'enfant de personne.","Et personne ne Lui est égal."],
+111:["Que les mains d'Abou Lahab périssent, et qu'il périsse lui-même.","Sa fortune et ce qu'il a gagné ne l'ont pas sauvé.","Il entrera dans un feu plein de flammes,","ainsi que sa femme, la porteuse de bois,","avec à son cou une corde de fibres."],
+110:["Quand viennent l'aide d'Allah et la victoire,","et que tu vois les gens entrer en foule dans la religion d'Allah,","alors glorifie ton Seigneur en Le louant, et demande-Lui pardon : Il accepte toujours le repentir."],
+109:["Dis : Ô vous les mécréants,","je n'adore pas ce que vous adorez,","et vous n'adorez pas ce que j'adore.","Je n'adorerai jamais ce que vous avez adoré,","et vous n'adorez pas ce que j'adore.","À vous votre religion, et à moi ma religion."],
+108:["Nous t'avons donné Al-Kawthar (un bien immense),","alors prie pour ton Seigneur et sacrifie pour Lui.","C'est celui qui te déteste qui sera sans descendance."],
+107:["As-tu vu celui qui traite de mensonge le Jour du Jugement ?","C'est celui qui repousse l'orphelin,","et qui n'encourage pas à nourrir le pauvre.","Malheur à ceux qui prient","mais qui négligent leur prière,","qui font les choses pour être vus,","et qui refusent de prêter les petites choses utiles."],
+106:["Pour l'habitude des Quraysh,","leur habitude de voyager l'hiver et l'été,","qu'ils adorent donc le Seigneur de cette Maison (la Kaaba),","qui les a nourris contre la faim et rassurés contre la peur."],
+105:["N'as-tu pas vu comment ton Seigneur a traité les gens de l'éléphant ?","N'a-t-Il pas fait échouer leur plan ?","Il a envoyé sur eux des oiseaux par groupes,","qui leur lançaient des pierres d'argile cuite,","et Il les a rendus comme de la paille mâchée."],
+103:["Par le temps !","L'homme est vraiment en perte,","sauf ceux qui croient, font de bonnes actions, se conseillent la vérité et se conseillent la patience."],
+102:["Vouloir toujours plus vous distrait,","jusqu'à ce que vous alliez dans les tombes.","Mais non ! Vous saurez bientôt !","Encore non ! Vous saurez bientôt !","Si vous saviez avec certitude…","Vous verrez sûrement l'Enfer.","Puis vous le verrez de vos yeux, avec certitude.","Puis ce jour-là, on vous interrogera sur les bienfaits reçus."],
+104:["Malheur à celui qui se moque des autres et dit du mal d'eux,","qui amasse de l'argent et le compte,","en croyant que son argent le rendra éternel.","Mais non ! Il sera jeté dans la Ḥuṭama.","Et qui te fera savoir ce qu'est la Ḥuṭama ?","C'est le feu allumé d'Allah,","qui monte jusqu'aux cœurs.","Il se refermera sur eux,","en hautes colonnes."],
+101:["Le fracas !","Qu'est-ce que le fracas ?","Et qui te fera savoir ce qu'est le fracas ?","C'est le jour où les gens seront comme des papillons dispersés,","et les montagnes comme de la laine cardée.","Celui dont la balance des bonnes actions sera lourde","vivra une vie heureuse.","Et celui dont la balance sera légère","aura pour demeure un abîme.","Et qui te fera savoir ce que c'est ?","Un feu brûlant."],
+100:["Par les chevaux qui courent en haletant,","qui font jaillir des étincelles avec leurs sabots,","qui attaquent au matin,","soulevant la poussière,","et arrivent au milieu de l'armée ennemie !","L'homme est vraiment ingrat envers son Seigneur,","et il en est lui-même témoin,","et il aime très fort les richesses.","Ne sait-il pas que, lorsque ce qui est dans les tombes sera sorti,","et que ce qui est dans les cœurs sera dévoilé,","ce jour-là, leur Seigneur saura parfaitement tout d'eux ?"],
+99:["Quand la terre tremblera d'un grand tremblement,","et que la terre fera sortir ce qu'elle porte,","et que l'homme dira : « Qu'est-ce qu'elle a ? »,","ce jour-là, elle racontera ce qui s'est passé sur elle,","parce que ton Seigneur le lui aura ordonné.","Ce jour-là, les gens sortiront par groupes pour voir leurs actions.","Celui qui a fait le poids d'un grain de poussière de bien le verra,","et celui qui a fait le poids d'un grain de poussière de mal le verra."],
+97:["Nous l'avons fait descendre pendant la Nuit du Destin.","Et qui te fera savoir ce qu'est la Nuit du Destin ?","La Nuit du Destin est meilleure que mille mois.","Les anges et l'Esprit (Jibrîl) y descendent, avec la permission de leur Seigneur, pour chaque ordre.","Elle est paix, jusqu'au lever de l'aube."]};
+const INFO={1:["Mecquoise","On la récite dans chaque rakʿa de la prière."],114:["Mecquoise","Avec Al-Falaq et Al-Ikhlâs, on la récite le matin, le soir et avant de dormir."],
+113:["Mecquoise","Avec An-Nâs et Al-Ikhlâs, on la récite pour demander la protection d'Allah."],112:["Mecquoise","Le Prophète ﷺ a dit qu'elle vaut un tiers du Coran."],
+111:["Mecquoise","Abou Lahab était un oncle du Prophète ﷺ qui lui faisait du mal."],110:["Médinoise","L'une des dernières sourates révélées."],
+109:["Mecquoise","Souvent récitée avec Al-Ikhlâs dans les 2 rakʿa avant la prière du Fajr."],108:["Mecquoise","La plus courte sourate du Coran : 3 versets."],
+107:["Mecquoise","Elle apprend à aider les autres et à bien prier."],106:["Mecquoise","Elle suit Al-Fîl : Allah a protégé la Kaaba et ses habitants."],
+105:["Mecquoise","Cela s'est passé l'Année de l'Éléphant, l'année de naissance du Prophète ﷺ."],103:["Mecquoise","Très courte, elle explique comment réussir sa vie."],
+102:["Mecquoise","Elle rappelle de remercier Allah pour ce qu'on a."],104:["Mecquoise","Elle apprend à ne jamais se moquer des autres."],101:["Mecquoise","Al-Qâriʿa est l'un des noms du Jour du Jugement."],100:["Mecquoise","Elle commence par décrire des chevaux au galop."],99:["Médinoise","Elle montre que chaque petite bonne action compte."],97:["Mecquoise","On cherche la Nuit du Destin dans les 10 dernières nuits du Ramadan."]};
+const FACTS=[["114 sourates","Le Coran compte 114 sourates (chapitres) et 6 236 versets selon le décompte le plus courant."],
+["De droite à gauche","L'arabe s'écrit et se lit de droite à gauche. Les pages d'un mushaf se tournent dans l'autre sens."],
+["28 lettres","L'alphabet arabe a 28 lettres. La plupart s'attachent entre elles, comme l'écriture en attaché."],
+["Juz ʿAmma","Le Coran est partagé en 30 parties (juz). La dernière, Juz ʿAmma, a les sourates courtes : c'est par elle qu'on commence."],
+["Le tajwid","Ce sont les règles pour bien prononcer le Coran. On les apprend surtout en écoutant et en répétant."],
+["Petit à petit","Mieux vaut 10 minutes chaque jour qu'une heure une fois par semaine. Révise ce que tu sais déjà avant d'apprendre du nouveau."]];
+const fn=(s,v)=>"audio/"+String(s).padStart(3,"0")+String(v).padStart(3,"0")+".mp3";
+
+/* ================= LECTEUR AUDIO (récitation intégrée) ================= */
+const KIDS=[1,112,113,114];
+const au=new Audio();let qList=[],qOpt={rep:1,slow:false,kids:GIFT},qRep=0,onTrack=null;
+const playList=(list,cb)=>{qList=list.slice();qRep=0;onTrack=cb||null;next()};
+const next=()=>{if(!qList.length){onTrack&&onTrack(null);return}const t=qList[0];au.src=t.src;au.playbackRate=qOpt.slow?.75:1;try{au.preservesPitch=true}catch(e){}
+  onTrack&&onTrack(t);try{const p=au.play();if(p&&p.catch)p.catch(()=>{onTrack&&onTrack(null)})}catch(e){onTrack&&onTrack(null)}};
+au.addEventListener("ended",()=>{qRep++;const t=qList[0];if(t&&!t.basm&&qRep<qOpt.rep){next();return}qRep=0;qList.shift();next()});
+const stopAudio=()=>{qList=[];try{au.pause()}catch(e){}onTrack&&onTrack(null)};
+const surahTracks=(s,from=0,to)=>{const l=[];if(s.n!==1&&from===0)l.push({src:fn(1,1),basm:true,k:-1});
+  for(let k=from;k<(to??s.v.length);k++)l.push({src:fn(s.n,k+1),k});return l};
+
+const LESSONS=[
+{t:"Les 3 petites voyelles",d:"Un petit trait au-dessus (fatha) fait « a ». Un petit trait en dessous (kasra) fait « i ». Une petite boucle au-dessus (damma) fait « ou ».",
+ ex:["ب","م","ل","ن","ر","س"].flatMap(c=>{const t=L.find(x=>x[0]===c)[3];return[[c+"َ",t+"a"],[c+"ِ",t+"i"],[c+"ُ",t+"ou"]]})},
+{t:"Le soukoun  ْ",d:"Un petit rond au-dessus d'une lettre : elle n'a pas de voyelle. On la dit toute seule, collée à la lettre d'avant.",
+ ex:[["مِنْ","min"],["قُلْ","qoul"],["لَمْ","lam"],["عَنْ","ʿan"],["هَلْ","hal"],["قَدْ","qad"]]},
+{t:"La chadda  ّ",d:"Un petit « w » au-dessus : on dit la lettre deux fois, bien appuyée.",
+ ex:[["رَبِّ","rabbi"],["إِنَّ","inna"],["أُمّ","oumm"],["ثُمَّ","thoumma"],["حَقّ","ḥaqq"],["كَلَّا","kallā"]]},
+{t:"Le tanwin",d:"La voyelle est écrite deux fois : on ajoute un « n » à la fin. ً = an, ٍ = in, ٌ = oun.",
+ ex:[["بًا","ban"],["بٍ","bin"],["بٌ","boun"],["أَحَدٌ","aḥadoun"],["كِتَابًا","kitāban"],["نَارٍ","nārin"]]},
+{t:"Les voyelles longues",d:"Après une fatha, le ا fait un « ā » long. Après une kasra, le ي fait « ī ». Après une damma, le و fait « oū ». On tire le son.",
+ ex:[["بَا","bā"],["بِي","bī"],["بُو","boū"],["نُور","noūr"],["دِين","dīn"],["نَار","nār"]]},
+{t:"Les lettres qui se tiennent la main",d:"Dans un mot, les lettres s'attachent et changent un peu de forme. Regarde les lettres séparées, puis le mot entier.",
+ ex:[["بَيْت","bayt — maison","ب ي ت"],["قَلَم","qalam — stylo","ق ل م"],["شَمْس","chams — soleil","ش م س"],["نُور","noūr — lumière","ن و ر"],["كِتَاب","kitāb — livre","ك ت ا ب"],["سَمَك","samak — poissons","س م ك"]]}];
+
+const TAJ=[
+{t:"Les lettres « lune » et « soleil »",d:"Devant une lettre « lune », on prononce le L de ال : al-qamar. Devant une lettre « soleil », le L ne se dit pas et la lettre suivante est doublée : ach-chams.",
+ ex:[["الْحَمْدُ","al-ḥamdou 🌙"],["الْفَلَقِ","al-falaq 🌙"],["الرَّحْمَٰنِ","ar-raḥmān ☀️"],["النَّاسِ","an-nās ☀️"]],game:1},
+{t:"La qalqala : le rebond",d:"5 lettres rebondissent quand elles ont un soukoun, ou quand on s'arrête dessus : ق ط ب ج د. Pour s'en souvenir : « qoutb jad ».",
+ ex:[["يَلِدْ","yalid — le د rebondit"],["أَحَدْ","aḥad (à l'arrêt)"],["الْفَلَقْ","al-falaq (à l'arrêt)"],["لَهَبْ","lahab (à l'arrêt)"]]},
+{t:"La ghounna : le son dans le nez",d:"Quand ن ou م porte une chadda, on garde le son dans le nez pendant 2 temps.",
+ ex:[["إِنَّا","innā"],["النَّاسِ","an-nās"],["الْجِنَّةِ","al-jinnati"],["ثُمَّ","thoumma"]]},
+{t:"Le madd : on tire le son",d:"Une voyelle longue dure 2 temps (compte sur 2 doigts). Avec le signe ~ (madda), on la tire bien plus longtemps : jusqu'à 6 temps.",
+ ex:[["مَالِكِ","mā-liki — 2 temps"],["الرَّحِيمِ","ar-raḥīm — 2 temps"],["أَعُوذُ","aʿoūdhou — 2 temps"],["الضَّآلِّينَ","aḍ-ḍāāāllīn — 6 temps"]]}];
+const SUNMOON=[["الْقَمَر",0],["الْكِتَاب",0],["الْفِيل",0],["الْبَيْت",0],["الْعَصْر",0],["الْحَمْد",0],["الْجَمَل",0],["الْمَسْجِد",0],
+ ["الشَّمْس",1],["النَّاس",1],["الرَّحْمَٰن",1],["الدِّين",1],["الصِّرَاط",1],["التُّفَّاحَة",1],["السَّمَكَة",1],["الزَّرَافَة",1]];
+
+/* ================= MÉMOIRE ================= */
+const blank=n=>({name:n,stars:0,duas:[],names:[],seen:[],traced:[],quizBest:0,vdone:{},learned:{},days:{},goal:10});
+let DB={cur:"Mon enfant",p:{}};
+try{const s=JSON.parse(localStorage.getItem(PREMIUM?"lawhFam":"lawh")||"null");if(s&&s.p)DB=s;else if(s&&!PREMIUM)DB.p["Mon enfant"]=Object.assign(blank("Mon enfant"),{stars:s.stars||0,seen:s.seen||[]})}catch(e){}
+if(!DB.p[DB.cur])DB.p[DB.cur]=blank(DB.cur);
+let P=DB.p[DB.cur];
+const save=()=>{try{localStorage.setItem(PREMIUM?"lawhFam":"lawh",JSON.stringify(DB))}catch(e){}};
+const addStar=(n=1)=>{P.stars+=n;P.days[today()]=(P.days[today()]||0)+n;save();const b=$("starCount");b.textContent=P.stars;b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop")};
+const head=()=>{$("starCount").textContent=P.stars;$("who").textContent=PREMIUM?P.name+" :":"Mes étoiles :"};
+
+/* ================= VOIX ================= */
+let voice=null;
+const pickVoice=()=>{try{voice=speechSynthesis.getVoices().find(v=>/^ar/i.test(v.lang))||null}catch(e){}};
+try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
+const say=t=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="ar-SA";if(voice)u.voice=voice;u.rate=.8;speechSynthesis.speak(u)}catch(e){}};
+const VOICE_TIP="Pas de son ? Ajoute une voix arabe : Réglages → Accessibilité → Contenu énoncé → Voix → Arabe.";
+document.addEventListener("click",e=>{const s=e.target.closest("[data-say]");if(s)say(s.dataset.say)});
+
+/* ================= VERROU (version gratuite) ================= */
+const lockCard=what=>`<div class="card lock"><h3>🔒 ${what} — dans la Version Famille</h3>
+<p>La version gratuite contient déjà 4 sourates complètes : écouter, apprendre, réciter. La Version Famille ajoute :</p><ul>
+<li>18 sourates de Juz ʿAmma au lieu de 4</li><li>Les 99 noms d'Allah et les histoires des prophètes</li><li>Les révisions automatiques pour ne rien oublier</li>
+<li>Les leçons de lecture et de tajwid</li>
+<li>Plus de jeux, plusieurs profils (enfants, grands-parents) et l'espace parents</li></ul>
+<p class="note">Demande à tes parents.</p></div>`;
+
+/* ================= NAVIGATION ================= */
+const TABS=[["accueil","Accueil"],["lettres","Lettres"],["lire","Lire"],["ecrire","Écrire"],["jouer","Jouer"],["coran","Coran"],["islam","Douas & prière"],["tajwid","Tajwid"],["parents","Parents"]];
+const HIDE=GIFT&&!PREMIUM?["lire","tajwid","parents"]:[];
+$("nav").innerHTML=TABS.filter(t=>!HIDE.includes(t[0])).map(t=>`<a href="#${t[0]}">${t[1]}${!PREMIUM&&["lire","tajwid","parents"].includes(t[0])?" 🔒":""}</a>`).join("");
+$("edition").textContent=PREMIUM?"Famille":"Gratuit";if(GIFT)$("edition").remove();
+
+/* ================= LETTRES ================= */
+let cur=0;
+const renderDetail=()=>{const l=L[cur],f=forms(l[0]);
+  $("detail").innerHTML=`<div class="big ar">${l[0]}</div>
+  <div><h2>${l[1]} <span class="ar">${l[2]}</span></h2>
+  <div class="row"><button class="pri" data-say="${l[2]}">🔊 Écouter</button><button id="goTrace">✏️ L'écrire</button></div>
+  <div class="forms">${["Seule","Début","Milieu","Fin"].map((n,k)=>`<div><span class="ar">${f[k]}</span><small>${n}</small></div>`).join("")}</div>
+  <div>Avec les petites voyelles :</div>
+  <div class="ex">${vowels(cur).map(v=>`<button class="say" data-say="${v[0]}">${v[0]}<small>${v[1]}</small></button>`).join("")}</div>
+  <div class="row"><button class="say" data-say="${l[4]}">${l[4]}</button> = ${l[5]}</div>
+  ${voice?"":`<p class="note">${VOICE_TIP}</p>`}</div>`;
+  if(!P.seen.includes(cur)){P.seen.push(cur);addStar();renderGrid()}};
+const renderGrid=()=>{$("grid").innerHTML=L.map((l,i)=>`<button class="tile${P.seen.includes(i)?" seen":""}" data-i="${i}" aria-label="${l[1]}"><span class="ar">${l[0]}</span><small>${l[1]}</small></button>`).join("")};
+$("grid").addEventListener("click",e=>{const b=e.target.closest(".tile");if(!b)return;cur=+b.dataset.i;renderDetail();say(L[cur][2]);$("detail").scrollIntoView({behavior:"smooth",block:"start"})});
+$("detail").addEventListener("click",e=>{if(e.target.closest("#goTrace")){tr=cur;location.hash="ecrire"}});
+
+/* ================= LIRE ================= */
+let lesson=0,lq=null;
+const renderLire=()=>{if(!PREMIUM){$("lireBox").innerHTML=`<h2>J'apprends à lire</h2>`+lockCard("Les leçons de lecture");return}
+  const ls=LESSONS[lesson];
+  $("lireBox").innerHTML=`<h2>J'apprends à lire</h2><p class="lead">Six petites leçons, dans l'ordre. Touche un exemple pour l'écouter.</p>
+  <div class="seg">${LESSONS.map((x,i)=>`<button aria-pressed="${i===lesson}" data-l="${i}">${i+1}. ${x.t}</button>`).join("")}</div>
+  <div class="card"><h3>${ls.t}</h3><p>${ls.d}</p>
+  <div class="ex">${ls.ex.map(x=>`<button class="say" data-say="${x[0]}">${x[2]?`<small class="ar" style="font-size:20px;direction:rtl">${x[2]}</small>`:""}${x[0]}<small>${x[1]}</small></button>`).join("")}</div></div>
+  <div class="card quiz" id="lquiz"></div>`;lQ()};
+const lQ=()=>{const ex=LESSONS[lesson].ex,a=pick(ex),opts=shuffle([a,...shuffle(ex.filter(x=>x!==a)).slice(0,2)]);lq={a};
+  $("lquiz").innerHTML=`<div class="ask">Comment se lit ce mot ?<span class="ar">${a[0]}</span></div>
+  <div class="opts">${opts.map(o=>`<button data-lo="${o[1]}">${o[1].split(" — ")[0]}</button>`).join("")}</div><div class="msg" id="lmsg"></div>`};
+$("lireBox").addEventListener("click",e=>{const b=e.target.closest("[data-l]");if(b){lesson=+b.dataset.l;renderLire();return}
+  const o=e.target.closest("[data-lo]");if(!o||lq.done)return;lq.done=1;const ok=o.dataset.lo===lq.a[1];o.classList.add(ok?"right":"wrong");
+  if(!ok)$("lquiz").querySelector(`[data-lo="${CSS.escape(lq.a[1])}"]`).classList.add("right");else addStar();say(lq.a[0]);setTimeout(lQ,ok?900:1700)});
+
+/* ================= ÉCRIRE ================= */
+const cv=$("cv"),ctx=cv.getContext("2d");let tr=0,fm=0,ink,ghost,drawing=false,last=null,W=0,H=0,dpr=1;
+const FN=["Seule","Début","Milieu","Fin"];
+const renderSeg=()=>{$("formSeg").innerHTML=GIFT&&!PREMIUM?"":FN.map((n,i)=>`<button aria-pressed="${i===fm}" data-f="${i}" ${!PREMIUM&&i?"disabled":""}>${n}${!PREMIUM&&i?" 🔒":""}</button>`).join("")};
+$("formSeg").addEventListener("click",e=>{const b=e.target.closest("[data-f]");if(!b||b.disabled)return;fm=+b.dataset.f;renderSeg();setupCanvas()});
+const setupCanvas=()=>{dpr=window.devicePixelRatio||1;W=cv.clientWidth;H=cv.clientHeight;if(!W)return;
+  cv.width=W*dpr;cv.height=H*dpr;ink=document.createElement("canvas");ink.width=cv.width;ink.height=cv.height;
+  ghost=document.createElement("canvas");ghost.width=cv.width;ghost.height=cv.height;
+  const g=ghost.getContext("2d"),t=forms(L[tr][0])[fm];g.scale(dpr,dpr);g.fillStyle="#000";g.textAlign="center";g.textBaseline="middle";g.direction="rtl";
+  g.font=`700 ${Math.min(H*.6,W*(fm?.45:.7))}px "Noto Naskh Arabic"`;g.fillText(t,W/2,H*.48);
+  $("trLetter").textContent=t;$("trName").textContent=L[tr][1]+(fm?" ("+FN[fm].toLowerCase()+")":"");$("trMsg").textContent="";paint()};
+const paint=()=>{ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.fillStyle="rgba(140,150,170,.18)";for(let y=40;y<H;y+=40)ctx.fillRect(0,y*dpr,cv.width,dpr);
+  ctx.globalAlpha=.22;ctx.drawImage(ghost,0,0);ctx.globalAlpha=1;ctx.drawImage(ink,0,0)};
+const pos=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*dpr,(e.clientY-r.top)*dpr]};
+const line=(a,b)=>{const k=ink.getContext("2d");k.strokeStyle="#2448a6";k.lineWidth=Math.max(14,Math.min(W,H)*.055)*dpr;k.lineCap=k.lineJoin="round";k.beginPath();k.moveTo(a[0],a[1]);k.lineTo(b[0],b[1]);k.stroke();paint()};
+cv.addEventListener("pointerdown",e=>{drawing=true;last=pos(e);try{cv.setPointerCapture(e.pointerId)}catch(x){}line(last,last)});
+cv.addEventListener("pointermove",e=>{if(!drawing)return;const p=pos(e);line(last,p);last=p});
+["pointerup","pointercancel","pointerleave"].forEach(t=>cv.addEventListener(t,()=>drawing=false));
+$("trClear").onclick=()=>{ink.getContext("2d").clearRect(0,0,ink.width,ink.height);$("trMsg").textContent="";paint()};
+$("trNext").onclick=()=>{tr=(tr+1)%L.length;setupCanvas()};
+$("trPrev").onclick=()=>{tr=(tr+L.length-1)%L.length;setupCanvas()};
+$("trCheck").onclick=()=>{const g=ghost.getContext("2d").getImageData(0,0,ghost.width,ghost.height).data,d=ink.getContext("2d").getImageData(0,0,ink.width,ink.height).data;
+  let tot=0,hit=0,inkT=0,out=0;for(let i=3;i<g.length;i+=16){const gi=g[i]>100,ii=d[i]>0;if(gi){tot++;if(ii)hit++}if(ii){inkT++;if(!gi)out++}}
+  const cov=tot?hit/tot:0,spill=inkT?out/inkT:1,m=$("trMsg");
+  if(cov>.6&&spill<.6){m.className="msg ok";m.textContent="Bravo, magnifique ! ★ +1";addStar();if(!P.traced.includes(tr)){P.traced.push(tr);save()}say(L[tr][2])}
+  else if(cov>.35){m.className="msg";m.textContent="Presque ! Repasse sur toute la lettre grise."}
+  else{m.className="msg bad";m.textContent="Essaie encore, suis bien la lettre grise."}};
+const trRO=new ResizeObserver(()=>{if(cv.clientWidth&&cv.clientWidth!==W)setupCanvas()});trRO.observe(cv);
+
+/* ================= JEUX ================= */
+const GAMES=[["quiz","Le quiz des lettres"],["debut","Le mot mystère"],["memo","Le jeu de mémoire"]];
+let gm="quiz",qn=0,score=0,q=null,mem=null;
+const renderGameSeg=()=>{$("gameSeg").innerHTML=GAMES.filter((g,i)=>!(GIFT&&!PREMIUM&&i)).map((g,i)=>`<button aria-pressed="${g[0]===gm}" data-g="${g[0]}">${g[1]}${!PREMIUM&&i?" 🔒":""}</button>`).join("")};
+$("gameSeg").addEventListener("click",e=>{const b=e.target.closest("[data-g]");if(!b)return;gm=b.dataset.g;qn=0;score=0;renderGameSeg();newGame()});
+const newGame=()=>{if(!PREMIUM&&gm!=="quiz"){$("game").outerHTML=`<div class="card quiz" id="game">${lockCard("Ce jeu")}</div>`;return}
+  if(gm==="memo")return newMemo();
+  if(qn>=10){if(score>P.quizBest){P.quizBest=score;save()}
+    $("game").innerHTML=`<div class="ask">Fini ! <b>${score}</b> sur 10 ★</div><p>${score>=8?"Champion·ne !":score>=5?"Très bien, continue !":"Revois les lettres et réessaie."}</p><button class="pri" id="again">Rejouer</button>`;return}
+  const ans=Math.floor(Math.random()*L.length),opts=shuffle([ans,...shuffle(L.map((_,i)=>i).filter(i=>i!==ans)).slice(0,3)]);
+  const mode=gm==="debut"?2:Math.random()<.5?1:0;q={ans};
+  const ask=mode===2?`Par quelle lettre commence ce mot ?<span class="ar">${L[ans][4]}</span>(${L[ans][5]})`:mode?`Quelle lettre s'appelle <b>${L[ans][1]}</b> ?`:`Comment s'appelle cette lettre ?<span class="ar">${L[ans][0]}</span>`;
+  $("game").innerHTML=`<div class="ask">${ask}</div><button data-say="${mode===2?L[ans][4]:L[ans][2]}" style="margin-bottom:12px">🔊 Écouter</button>
+  <div class="opts">${opts.map(i=>`<button data-o="${i}">${mode?`<span class="ar">${L[i][0]}</span>`:L[i][1]}</button>`).join("")}</div>
+  <div class="bar" style="max-width:520px;margin:14px auto 0"><i style="width:${qn*10}%"></i></div><p>Question ${qn+1} sur 10</p>`};
+const newMemo=()=>{const ids=shuffle(L.map((_,i)=>i)).slice(0,6);mem={cards:shuffle(ids.flatMap(i=>[[i,0],[i,1]])),open:[],found:[],tries:0};drawMemo()};
+const drawMemo=()=>{const done=mem.found.length===6;
+  $("game").innerHTML=`<p>Retrouve chaque lettre et son nom. Essais : ${mem.tries}</p>
+  <div class="memo">${mem.cards.map((c,k)=>{const show=mem.open.includes(k)||mem.found.includes(c[0]);
+    return `<button data-m="${k}" class="${show?(mem.found.includes(c[0])?"right":""):"back"}" aria-label="Carte ${k+1}">${show?(c[1]?L[c[0]][1]:`<span class="ar">${L[c[0]][0]}</span>`):"?"}</button>`}).join("")}</div>
+  ${done?`<div class="msg ok">Bravo, tout est trouvé !</div><button class="pri" id="again">Rejouer</button>`:""}`};
+$("game").parentNode.addEventListener("click",e=>{
+  if(e.target.closest("#again")){qn=0;score=0;newGame();return}
+  const m=e.target.closest("[data-m]");
+  if(m&&mem){const k=+m.dataset.m,c=mem.cards[k];if(mem.open.length>=2||mem.open.includes(k)||mem.found.includes(c[0]))return;mem.open.push(k);
+    if(mem.open.length===2){mem.tries++;const[a,b]=mem.open.map(x=>mem.cards[x]);
+      if(a[0]===b[0]){mem.found.push(a[0]);mem.open=[];addStar();say(L[a[0]][2])}else setTimeout(()=>{mem.open=[];drawMemo()},900)}
+    drawMemo();return}
+  const b=e.target.closest("[data-o]");if(!b||!q||q.done)return;q.done=1;
+  const ok=+b.dataset.o===q.ans;b.classList.add(ok?"right":"wrong");
+  if(!ok)$("game").querySelector(`[data-o="${q.ans}"]`).classList.add("right");else{score++;addStar()}
+  say(L[q.ans][2]);qn++;setTimeout(newGame,ok?900:1700)});
+
+/* ================= CORAN ================= */
+let sI=0,mode="lire",hide=0,ord=null,co=null,rec=null;
+const words=t=>t.split(" ");
+const isLearned=s=>!!P.learned[s.n];
+const vd=s=>P.vdone[s.n]||[];
+const due=()=>S.filter(s=>P.learned[s.n]&&P.learned[s.n].due<=today());
+const INTERVALS=[1,3,7,14,30,60];
+const schedule=(s,good)=>{const r=P.learned[s.n]||{lvl:0,date:today()};r.lvl=good?Math.min(r.lvl+1,INTERVALS.length-1):0;r.due=addDays(today(),INTERVALS[r.lvl]);P.learned[s.n]=r;save()};
+const renderRev=()=>{if(!PREMIUM){$("revBox").innerHTML="";return}const d=due();
+  $("revBox").innerHTML=d.length?`<div class="card" style="border:3px solid var(--saf)"><h3>À réviser aujourd'hui</h3><div class="row">${d.map(s=>`<button class="gold" data-rev="${S.indexOf(s)}">${s.fr}</button>`).join("")}</div></div>`:""};
+const renderSurahs=()=>{$("surahs").innerHTML=S.map((s,i)=>{if(GIFT&&!avail(s))return"";const p=Math.round(vd(s).length/s.v.length*100);
+  return `<button class="sc" aria-pressed="${i===sI}" data-s="${i}"><span><span class="ar">${s.ar}</span> ${avail(s)?(isLearned(s)?"★":""):"🔒"}</span>
+  <span>${s.fr}</span><small>n° ${s.n} · ${s.v.length} versets</small>${avail(s)?`<div class="bar"><i style="width:${isLearned(s)?100:p}%"></i></div>`:""}</button>`}).join("")};
+const maskWords=(t,h)=>{const w=words(t);if(!h)return t;return w.map((x,k)=>h===1&&k===0?x:`<span class="hid">${x}</span>`).join(" ")};
+let showFr=true,playing=false;
+const listen=(s,k)=>`<button class="pri play" data-play="${k}">▶ Écouter le verset</button>`;
+const mark=t=>{playing=!!t;document.querySelectorAll(".ayah.playing").forEach(x=>x.classList.remove("playing"));
+  if(t&&t.k>=0){const a=$("mushaf").querySelector(`.ayah[data-a="${t.k}"],.ayah[data-r="${t.k}"]`);if(a){a.classList.add("playing");a.scrollIntoView({behavior:"smooth",block:"center"})}}
+  const b=$("playAll");if(b)b.textContent=playing?"⏸ Arrêter":"▶ Toute la sourate"};
+const kidsOK=s=>KIDS.includes(s.n);
+const voiceHTML=s=>kidsOK(s)?`<div class="voice" role="group" aria-label="Choisir la voix"><b style="align-self:center">Voix :</b>
+  <button data-voice="0" aria-pressed="${!qOpt.kids}">Le récitateur (Alafasy)</button><button data-voice="1" aria-pressed="${qOpt.kids}">👧👦 Avec des enfants (Al-Minshâwî)</button></div>
+  ${qOpt.kids?`<p class="note" style="text-align:center;margin:0 0 8px">Le cheikh récite un verset, puis des enfants le répètent : répète avec eux ! Les boutons ▶ de chaque verset gardent la voix d'Alafasy.</p>`:""}`:"";
+const playerHTML=()=>voiceHTML(S[sI])+`<div class="player row" style="justify-content:center">
+  <button class="pri" id="playAll">${playing?"⏸ Arrêter":"▶ Toute la sourate"}</button>
+  ${qOpt.kids&&kidsOK(S[sI])?"":`<button id="repBtn" aria-pressed="${qOpt.rep===3}">🔁 Chaque verset ×3 : ${qOpt.rep===3?"oui":"non"}</button>`}
+  <button id="slowBtn" aria-pressed="${qOpt.slow}">🐢 Plus lent : ${qOpt.slow?"oui":"non"}</button></div>`;
+const renderSurah=()=>{const s=S[sI];
+  if(!avail(s)){$("mushaf").innerHTML=`<h3 style="text-align:center">Sourate ${s.fr} <span class="ar">${s.ar}</span></h3>`+lockCard("Cette sourate");return}
+  const modes=[["lire","📖 Écouter et lire"],["apprendre","🧠 Apprendre"],["reciter","🎤 Réciter"]],M=MEAN[s.n]||[],I=INFO[s.n]||["",""];
+  let body="";
+  if(mode==="lire")body=`${playerHTML()}<div class="row" style="justify-content:center;margin-bottom:12px">
+    <button id="frBtn">${showFr?"Cacher le sens en français":"Montrer le sens en français"}</button>
+    <button id="hideBtn">${["🙈 Cacher les mots","🙈 Tout cacher","👀 Tout montrer"][hide]}</button><button id="ordBtn">🧩 Remettre en ordre</button></div>
+    ${s.n!==1?`<div class="basm q">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>`:""}
+    ${s.v.map((v,i)=>`<div class="ayah" data-a="${i}"><div class="q">${maskWords(v[0],hide)} <span class="num">${AR(i+1)}</span></div>
+      <div class="row" style="flex-wrap:nowrap;align-items:flex-start"><button class="play" data-play="${i}" aria-label="Écouter le verset ${i+1}">▶</button>
+      <div><div class="tr">${i+1}. ${v[1]}</div>${showFr&&M[i]?`<div class="fr">${M[i]}</div>`:""}</div></div></div>`).join("")}
+    ${showFr?`<p class="note">Le sens en français est simplifié pour les enfants : ce n'est pas une traduction officielle.</p>`:""}<div id="ord"></div>`;
+  else if(mode==="apprendre")body=coachHTML(s);
+  else body=reciteHTML(s);
+  $("mushaf").innerHTML=`<h3 style="text-align:center">Sourate ${s.fr} <span class="ar">${s.ar}</span></h3>
+  <p class="tr" style="text-align:center;font-style:normal">${s.idea}</p>
+  <div class="infos"><span>Sourate n° ${s.n}</span><span>${s.v.length} versets</span><span>${I[0]}</span><span>${I[1]}</span></div>
+  <div class="seg" style="justify-content:center">${modes.map(m=>`<button aria-pressed="${m[0]===mode}" data-mode="${m[0]}">${m[1]}</button>`).join("")}</div>${body}`;
+  if(ord)renderOrder()};
+/* --- remettre en ordre --- */
+const orderHTML=(t,o)=>{const w=words(t);return `<div class="order"><b>Touche les mots dans le bon ordre (de droite à gauche).</b>
+  <div class="built q">${o.done.map(i=>w[i]).join(" ")||"&nbsp;"}</div>
+  <div class="chips">${o.pool.map(i=>`<button data-w="${i}">${w[i]}</button>`).join("")}</div><div class="msg">${o.msg||""}</div>`};
+const newOrd=a=>({a,done:[],pool:shuffle([...Array(words(S[sI].v[a][0]).length).keys()]),msg:""});
+const renderOrder=()=>{const el=$("ord");if(!el)return;el.innerHTML=orderHTML(S[sI].v[ord.a][0],ord)+`<div class="row"><button class="pri" id="ordNext">Verset suivant</button><button id="ordStop">Fermer</button></div></div>`};
+const tapWord=(o,t,i)=>{const w=words(t);if(w[i]===w[o.done.length]){o.done.push(o.done.length);o.pool.splice(o.pool.indexOf(i),1);o.msg=o.pool.length?"":"Bravo, verset complet ! ★";if(!o.pool.length)addStar();return!o.pool.length}o.msg="Pas encore : cherche le mot qui vient avant.";return false};
+/* --- coach de mémorisation (Famille) --- */
+const startCoach=()=>{const s=S[sI],d=vd(s);let k=0;while(d.includes(k)&&k<s.v.length-1)k++;co={k,step:0,reads:0,o:null,shown:false}};
+const coachHTML=s=>{if(!co)startCoach();const v=s.v[co.k],d=vd(s),hidden=co.step===2&&!co.shown;
+  const st=(i,t,ctrl)=>`<div class="step ${co.step>i?"done":""} ${co.step===i?"cur":""}"><b>${i+1}. ${t}</b>${co.step===i?ctrl:""}</div>`;
+  return `<p>Choisis un verset ou continue là où tu t'es arrêté.</p>
+  <div class="dots">${s.v.map((_,i)=>`<span class="${d.includes(i)?"d":""} ${i===co.k?"c":""}" data-k="${i}" role="button" tabindex="0">${i+1}</span>`).join("")}</div>
+  <div class="verse q">${hidden?maskWords(v[0],2):v[0]} <span class="num">${AR(co.k+1)}</span></div><div class="tr">${hidden?"…":v[1]}</div>
+  ${hidden||!(MEAN[s.n]||[])[co.k]?"":`<div class="fr">${MEAN[s.n][co.k]}</div>`}
+  <div class="steps">
+  ${st(0,"Écoute le verset 3 fois (il se répète tout seul)",`<button class="pri play" data-play3="${co.k}">▶ Écouter ×3</button><button id="cDone0">C'est fait</button>`)}
+  ${st(1,"Lis-le 3 fois à voix haute",`<button class="pri" id="cRead">J'ai lu (${co.reads}/3)</button>`)}
+  ${st(2,"Récite-le sans regarder",`<button id="cShow">${co.shown?"Cacher":"Regarder"}</button><button class="pri" id="cKnow">Je l'ai su ✓</button><button id="cAgain">Pas encore</button>`)}
+  ${st(3,"Remets les mots dans l'ordre",`<div id="cOrd" style="flex-basis:100%">${co.o?orderHTML(v[0],co.o)+"</div>":""}</div>`)}
+  </div>${co.step>3?`<div class="msg ok">Verset ${co.k+1} appris ! ★ +2</div><div class="row">${co.k<s.v.length-1?`<button class="pri" id="cNext">Verset suivant →</button>`:""}<button class="gold" data-mode="reciter">Réciter toute la sourate</button></div>`:""}`};
+/* --- récitation complète --- */
+const reciteHTML=s=>{if(!rec)rec={shown:[]};const r=P.learned[s.n];
+  return `<p>Récite toute la sourate de mémoire, à voix haute. Seul le premier mot de chaque verset est montré. Si tu bloques, touche le verset pour le voir.${r&&PREMIUM?` Prochaine révision : <b>${fmt(r.due)}</b>.`:""}</p>
+  <div class="row" style="margin-bottom:8px"><button id="playAll">${playing?"⏸ Arrêter":"▶ Toute la sourate"}</button><span class="note" style="margin:0">Écoute après avoir récité, pour vérifier.</span></div>
+  ${s.n!==1?`<div class="basm q">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>`:""}
+  ${s.v.map((v,i)=>`<div class="ayah" data-r="${i}"><div class="q">${rec.shown.includes(i)?v[0]:maskWords(v[0],1)} <span class="num">${AR(i+1)}</span></div></div>`).join("")}
+  <div class="row" style="margin-top:12px"><button class="pri" id="rGood">Je l'ai bien récitée ✓</button><button id="rBad">J'ai hésité</button></div>`};
+const diploma=s=>{$("dip").innerHTML=`<p style="margin:0">Diplôme de</p><h2>${GIFT&&kid?kid:PREMIUM?P.name:"Bravo !"}</h2><p>a appris par cœur la sourate</p>
+  <div class="q">${s.ar}</div><h3>${s.fr}</h3><p>le ${fmt(today())}</p><p>Qu'Allah te bénisse ! ★ +5</p><button class="pri" id="dipClose">Merci !</button>`;$("ov").classList.add("on")};
+$("ov").addEventListener("click",e=>{if(e.target.id==="dipClose"||e.target.id==="ov")$("ov").classList.remove("on")});
+
+$("revBox").addEventListener("click",e=>{const b=e.target.closest("[data-rev]");if(!b)return;sI=+b.dataset.rev;mode="reciter";rec=null;ord=null;renderSurahs();renderSurah();$("mushaf").scrollIntoView({behavior:"smooth"})});
+$("surahs").addEventListener("click",e=>{const b=e.target.closest("[data-s]");if(!b)return;stopAudio();sI=+b.dataset.s;hide=0;ord=null;co=null;rec=null;mode="lire";renderSurahs();renderSurah();$("mushaf").scrollIntoView({behavior:"smooth",block:"start"})});
+$("mushaf").addEventListener("click",e=>{const s=S[sI],t=e.target;const id=t.closest("button")?.id;
+  const m=t.closest("[data-mode]");if(m){stopAudio();mode=m.dataset.mode;ord=null;co=null;rec=null;renderSurah();return}
+  /* audio */
+  const vb=t.closest("[data-voice]");if(vb){stopAudio();qOpt.kids=vb.dataset.voice==="1";renderSurah();return}
+  if(id==="playAll"){if(playing)stopAudio();else if(qOpt.kids&&kidsOK(s)&&mode!=="reciter")playList([{src:"audio/kids/"+String(s.n).padStart(3,"0")+".mp3",k:-1,basm:true}],mark);else playList(surahTracks(s),mark);return}
+  if(id==="repBtn"){qOpt.rep=qOpt.rep===3?1:3;renderSurah();return}
+  if(id==="slowBtn"){qOpt.slow=!qOpt.slow;au.playbackRate=qOpt.slow?.75:1;renderSurah();return}
+  if(id==="frBtn"){showFr=!showFr;renderSurah();return}
+  const pl=t.closest("[data-play]");if(pl){const k=+pl.dataset.play;playList([{src:fn(s.n,k+1),k}],mark);return}
+  const p3=t.closest("[data-play3]");if(p3){const k=+p3.dataset.play3,o=qOpt.rep;qOpt.rep=3;playList([{src:fn(s.n,k+1),k}],x=>{if(!x)qOpt.rep=o;mark(x)});return}
+  if(id==="hideBtn"){hide=(hide+1)%3;renderSurah();return}
+  if(id==="ordBtn"){ord=newOrd(0);renderOrder();$("ord").scrollIntoView({behavior:"smooth",block:"center"});return}
+  if(id==="ordStop"){ord=null;$("ord").innerHTML="";return}
+  if(id==="ordNext"){ord=newOrd((ord.a+1)%s.v.length);renderOrder();return}
+  /* coach */
+  const dk=t.closest("[data-k]");if(dk&&co){co={k:+dk.dataset.k,step:0,reads:0,o:null,shown:false};renderSurah();return}
+  if(id==="cDone0"){co.step=1;renderSurah();return}
+  if(id==="cRead"){co.reads++;say("");if(co.reads>=3)co.step=2;renderSurah();return}
+  if(id==="cShow"){co.shown=!co.shown;renderSurah();return}
+  if(id==="cAgain"){co.step=1;co.reads=2;co.shown=false;renderSurah();return}
+  if(id==="cKnow"){co.step=3;co.shown=false;co.o=newOrd(co.k);renderSurah();return}
+  if(id==="cNext"){co={k:co.k+1,step:0,reads:0,o:null,shown:false};renderSurah();return}
+  /* récitation */
+  const r=t.closest("[data-r]");if(r&&rec){const i=+r.dataset.r;if(!rec.shown.includes(i))rec.shown.push(i);renderSurah();return}
+  if(id==="rGood"||id==="rBad"){const first=!isLearned(s),good=id==="rGood"&&rec.shown.length===0;
+    if(id==="rGood"&&first){P.vdone[s.n]=s.v.map((_,i)=>i);schedule(s,true);addStar(5);diploma(s)}
+    else{schedule(s,good);if(good)addStar(2)}
+    const nx=PREMIUM?" Prochaine révision le "+fmt(P.learned[s.n].due)+".":"";
+    $("mushaf").querySelector(".row:last-child").outerHTML=`<div class="msg ${id==="rGood"?"ok":""}">${good?"Excellent !"+nx:id==="rGood"?"Bien ! Tu as eu besoin d'un peu d'aide, révise-la encore."+nx:"Pas grave ! Réécoute la sourate et réessaie demain, in châ Allah."}</div>`;
+    rec=null;renderRev();renderSurahs();return}
+  /* mots à remettre */
+  const w=t.closest("[data-w]");
+  if(w){const i=+w.dataset.w;
+    if(co&&co.o&&mode==="apprendre"){if(tapWord(co.o,s.v[co.k][0],i)){co.step=4;const d=vd(s);if(!d.includes(co.k)){d.push(co.k);P.vdone[s.n]=d;addStar(2)}save();renderSurahs()}renderSurah();return}
+    if(ord){tapWord(ord,s.v[ord.a][0],i);renderOrder();return}}
+  const a=t.closest(".ayah[data-a]");if(a&&hide)a.querySelectorAll(".hid").forEach(x=>x.classList.remove("hid"))});
+
+/* ================= TAJWID ================= */
+let tj=0,sm=null;
+const renderTaj=()=>{if(!PREMIUM){$("tajBox").innerHTML=`<h2>Le tajwid pour les enfants</h2>`+lockCard("Les leçons de tajwid");return}const t=TAJ[tj];
+  $("tajBox").innerHTML=`<h2>Le tajwid pour les enfants</h2><p class="lead">Le tajwid, ce sont les règles pour bien réciter le Coran. Écoute toujours un récitateur pour entendre la règle.</p>
+  <div class="seg">${TAJ.map((x,i)=>`<button aria-pressed="${i===tj}" data-t="${i}">${x.t}</button>`).join("")}</div>
+  <div class="card"><h3>${t.t}</h3><p>${t.d}</p><div class="ex">${t.ex.map(x=>`<button class="say" data-say="${x[0]}">${x[0]}<small>${x[1]}</small></button>`).join("")}</div></div>
+  ${t.game?`<div class="card quiz" id="smq"></div>`:""}`;if(t.game)smQ()};
+const smQ=()=>{if(!$("smq"))return;const a=pick(SUNMOON);sm={a};$("smq").innerHTML=`<div class="ask">Lune ou soleil ?<span class="q">${a[0]}</span></div>
+  <div class="opts"><button data-sm="0">🌙 Lune : on dit le L</button><button data-sm="1">☀️ Soleil : le L disparaît</button></div>`};
+$("tajBox").addEventListener("click",e=>{const b=e.target.closest("[data-t]");if(b){tj=+b.dataset.t;renderTaj();return}
+  const o=e.target.closest("[data-sm]");if(!o||sm.done)return;sm.done=1;const ok=+o.dataset.sm===sm.a[1];o.classList.add(ok?"right":"wrong");
+  if(!ok)$("smq").querySelector(`[data-sm="${sm.a[1]}"]`).classList.add("right");else addStar();say(sm.a[0]);setTimeout(smQ,ok?900:1700)});
+
+/* ================= DOUAS ET ISLAM ================= */
+const DUAS=[
+["Avant de manger","Au début du repas","بِسْمِ اللَّهِ","Bismillāh","Au nom d'Allah."],
+["Si on a oublié de dire Bismillah","Pendant le repas","بِسْمِ اللَّهِ أَوَّلَهُ وَآخِرَهُ","Bismillāhi awwalahū wa ākhirah","Au nom d'Allah, au début et à la fin."],
+["Après avoir mangé","À la fin du repas","الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَٰذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ","Al-ḥamdu lillāhi lladhī aṭʿamanī hādhā wa razaqanīhi min ghayri ḥawlin minnī wa lā quwwah","Louange à Allah qui m'a donné ce repas, sans force ni pouvoir de ma part."],
+["Avant de dormir","Au lit, avant de dormir","بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا","Bismika llāhumma amūtu wa aḥyā","C'est en Ton nom, ô Allah, que je meurs et que je vis."],
+["Au réveil","En se réveillant","الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ","Al-ḥamdu lillāhi lladhī aḥyānā baʿda mā amātanā wa ilayhi n-nushūr","Louange à Allah qui nous a rendu la vie après nous avoir fait dormir, et c'est vers Lui que sera le retour."],
+["Entrer aux toilettes","Avant d'entrer","اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ","Allāhumma innī aʿūdhu bika mina l-khubuthi wa l-khabāʾith","Ô Allah, je Te demande de me protéger des mauvais djinns."],
+["Sortir des toilettes","En sortant","غُفْرَانَكَ","Ghufrānak","Je Te demande pardon."],
+["Sortir de la maison","En passant la porte","بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ","Bismillāh, tawakkaltu ʿala llāh, wa lā ḥawla wa lā quwwata illā billāh","Au nom d'Allah, je place ma confiance en Allah. Il n'y a de force et de puissance que par Allah."],
+["Dire bonjour (le salam)","Quand on rencontre un musulman","السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ","As-salāmu ʿalaykum wa raḥmatu llāhi wa barakātuh","Que la paix soit sur vous, ainsi que la miséricorde d'Allah et Ses bénédictions."],
+["Répondre au salam","Quand on nous dit le salam","وَعَلَيْكُمُ السَّلَامُ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ","Wa ʿalaykumu s-salāmu wa raḥmatu llāhi wa barakātuh","Et sur vous la paix, la miséricorde d'Allah et Ses bénédictions."],
+["Quand on éternue","Celui qui éternue dit :","الْحَمْدُ لِلَّهِ","Al-ḥamdu lillāh","Louange à Allah. (On lui répond : يَرْحَمُكَ اللَّهُ Yarḥamuka llāh, « Qu'Allah te fasse miséricorde ». Il répond : يَهْدِيكُمُ اللَّهُ وَيُصْلِحُ بَالَكُمْ Yahdīkumu llāhu wa yuṣliḥu bālakum, « Qu'Allah vous guide et améliore votre état ».)"],
+["Après les ablutions","Quand on a fini le woudou","أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ","Ashhadu an lā ilāha illa llāhu waḥdahū lā sharīka lah, wa ashhadu anna Muḥammadan ʿabduhū wa rasūluh","J'atteste qu'il n'y a de dieu qu'Allah, Seul, sans associé, et j'atteste que Muhammad est Son serviteur et Son messager."],
+["Pour ses parents","À tout moment (Coran 17:24)","رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا","Rabbi rḥamhumā kamā rabbayānī ṣaghīrā","Mon Seigneur, fais-leur miséricorde comme ils m'ont élevé quand j'étais petit.",0,1],
+["Pour apprendre","Avant d'étudier (Coran 20:114)","رَبِّ زِدْنِي عِلْمًا","Rabbi zidnī ʿilmā","Mon Seigneur, augmente ma science.",0,1],
+["Pour cette vie et l'au-delà","À tout moment (Coran 2:201)","رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ","Rabbanā ātinā fi d-dunyā ḥasanatan wa fi l-ākhirati ḥasanatan wa qinā ʿadhāba n-nār","Notre Seigneur, donne-nous du bien dans cette vie et du bien dans l'au-delà, et protège-nous du feu.",0,1],
+["En voiture ou en voyage","Quand on part (Coran 43:13-14)","سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَٰذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَىٰ رَبِّنَا لَمُنقَلِبُونَ","Subḥāna lladhī sakhkhara lanā hādhā wa mā kunnā lahū muqrinīn, wa innā ilā rabbinā la-munqalibūn","Gloire à Celui qui a mis ceci à notre service, alors que nous n'en étions pas capables, et c'est vers notre Seigneur que nous retournerons.",0,1],
+["Ayat al-Kursi","Le soir avant de dormir, et après chaque prière (Coran 2:255)","اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ","Allāhu lā ilāha illā huwa l-ḥayyu l-qayyūm, lā taʾkhudhuhū sinatun wa lā nawm, lahū mā fi s-samāwāti wa mā fi l-arḍ, man dhā lladhī yashfaʿu ʿindahū illā bi-idhnih, yaʿlamu mā bayna aydīhim wa mā khalfahum, wa lā yuḥīṭūna bi-shayʾin min ʿilmihī illā bi-mā shāʾ, wasiʿa kursiyyuhu s-samāwāti wa l-arḍ, wa lā yaʾūduhū ḥifẓuhumā, wa huwa l-ʿaliyyu l-ʿaẓīm","Allah, il n'y a de dieu que Lui, le Vivant, Celui qui fait tout tenir. Il ne somnole pas et ne dort pas. Tout ce qui est dans les cieux et sur la terre est à Lui. Personne ne peut intercéder auprès de Lui sans Sa permission. Il sait ce qui est devant les gens et ce qui est derrière eux, et ils ne connaissent de Sa science que ce qu'Il veut. Son Trône est plus vaste que les cieux et la terre, et les garder ne Le fatigue pas. Il est le Très-Haut, l'Immense.","audio/002255.mp3",1]];
+const DA={0:"audio/dua/t0.mp3",1:"audio/dua/t1.mp3",8:"audio/dua/t8.mp3",9:"audio/dua/t9.mp3",12:"audio/017024.mp3",13:"audio/020114.mp3",15:"audio/dua/v043.mp3",2:"audio/dua/d180.mp3",3:"audio/dua/d105.mp3",4:"audio/dua/d1.mp3",5:"audio/dua/d10.mp3",6:"audio/dua/d11.mp3",7:"audio/dua/d16.mp3",10:"audio/dua/d188.mp3",11:"audio/dua/d13.mp3",14:"audio/002201.mp3",16:"audio/002255.mp3"};
+const DNOTE={0:"Voix de synthèse (ce n'est pas une vraie personne).",1:"Voix de synthèse (ce n'est pas une vraie personne).",8:"Voix de synthèse (ce n'est pas une vraie personne).",9:"Voix de synthèse (ce n'est pas une vraie personne).",12:"Récitation d'Alafasy : le verset entier (17:24).",13:"Récitation d'Alafasy : le verset entier (20:114).",15:"Récitation d'Alafasy : les versets 13 et 14 en entier.",10:"L'enregistrement lit le hadith complet sur l'éternuement.",14:"L'enregistrement lit le verset entier (2:201).",5:"L'enregistrement commence par « Bismillah »."};
+DUAS.forEach((d,i)=>{if(DA[i])d[5]=DA[i]});
+/* --- ma voix : enregistrements gardés sur cet appareil --- */
+const idb=()=>new Promise((res,rej)=>{try{const r=indexedDB.open("samia",1);r.onupgradeneeded=()=>r.result.createObjectStore("voice");r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}});
+const vStore=(mode,fn2)=>idb().then(db=>new Promise((res,rej)=>{const t=db.transaction("voice",mode),st=t.objectStore("voice"),r=fn2(st);t.oncomplete=()=>res(r&&r.result);t.onerror=()=>rej(t.error)}));
+let myVoices=new Set(),voiceFor=null;
+vStore("readonly",st=>st.getAllKeys()).then(k=>{myVoices=new Set(k||[]);renderIsl()}).catch(()=>{});
+const voiceIn=document.createElement("input");voiceIn.type="file";voiceIn.accept="audio/*";voiceIn.hidden=true;document.body.appendChild(voiceIn);
+voiceIn.addEventListener("change",()=>{const f=voiceIn.files&&voiceIn.files[0],i=voiceFor;voiceIn.value="";if(!f||i==null)return;
+  if(f.size>15e6){alertBox("Ce fichier est trop gros (plus de 15 Mo). Enregistre une doua à la fois.");return}
+  vStore("readwrite",st=>st.put(f,i)).then(()=>{myVoices.add(i);renderIsl();alertBox("Ta voix est enregistrée pour : "+DUAS[i][0]+" ★")}).catch(()=>alertBox("Impossible d'enregistrer sur cet appareil (mode privé ?)."))});
+const alertBox=m=>{const b=$("voiceMsg");if(b){b.textContent=m;b.scrollIntoView({behavior:"smooth",block:"center"})}};
+const WUDU=[["Avoir l'intention","Dans son cœur : « Je fais mes ablutions pour Allah. » Puis dire بِسْمِ اللَّهِ Bismillāh."],
+["Les mains","Laver les deux mains jusqu'aux poignets, 3 fois."],["La bouche","Se rincer la bouche, 3 fois."],
+["Le nez","Mettre un peu d'eau dans le nez puis la rejeter, 3 fois."],["Le visage","Laver tout le visage, du front au menton et d'une oreille à l'autre, 3 fois."],
+["Les bras","Laver le bras droit jusqu'au coude, puis le gauche, 3 fois chacun."],["La tête","Passer les mains mouillées sur la tête, du front vers la nuque puis retour, 1 fois."],
+["Les oreilles","Essuyer l'intérieur et l'arrière des oreilles avec les doigts mouillés, 1 fois."],
+["Les pieds","Laver le pied droit jusqu'à la cheville, puis le gauche, 3 fois chacun, sans oublier entre les orteils."],
+["L'invocation","Dire l'invocation d'après les ablutions (dans l'onglet Douas)."]];
+const PRAY=[["Fajr","L'aube, avant le lever du soleil",2],["Dhohr","Le début de l'après-midi",4],["ʿAsr","Le milieu de l'après-midi",4],["Maghrib","Juste après le coucher du soleil",3],["ʿIchâʾ","La nuit",4]];
+const RAKA=[["Debout, face à la qibla","On a l'intention de prier dans son cœur.","",""],
+["Le takbir","On lève les mains et on dit :","اللَّهُ أَكْبَرُ","Allāhu akbar — Allah est le plus grand"],
+["La récitation","On récite Al-Fâtiha, puis (dans les 2 premières rakʿa) une autre sourate, par exemple Al-Ikhlâs.","",""],
+["L'inclinaison (roukouʿ)","On se penche, les mains sur les genoux, le dos droit, et on dit 3 fois :","سُبْحَانَ رَبِّيَ الْعَظِيمِ","Subḥāna rabbiya l-ʿaẓīm — Gloire à mon Seigneur l'Immense"],
+["Se relever","En se relevant on dit, puis une fois debout :","سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ — رَبَّنَا وَلَكَ الْحَمْدُ","Samiʿa llāhu liman ḥamidah — Rabbanā wa laka l-ḥamd"],
+["La prosternation (soujoud)","Front, nez, mains, genoux et orteils au sol. On dit 3 fois :","سُبْحَانَ رَبِّيَ الْأَعْلَىٰ","Subḥāna rabbiya l-aʿlā — Gloire à mon Seigneur le Très-Haut"],
+["S'asseoir un instant","Entre les deux prosternations on dit :","رَبِّ اغْفِرْ لِي","Rabbi ghfir lī — Mon Seigneur, pardonne-moi"],
+["Deuxième prosternation","Comme la première, puis on se relève pour la rakʿa suivante.","",""],
+["Le tachahhoud","Assis, après la 2e rakʿa et à la dernière, on dit :","التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ السَّلَامُ عَلَيْنَا وَعَلَىٰ عِبَادِ اللَّهِ الصَّالِحِينَ أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ","At-taḥiyyātu lillāhi wa ṣ-ṣalawātu wa ṭ-ṭayyibāt, as-salāmu ʿalayka ayyuha n-nabiyyu wa raḥmatu llāhi wa barakātuh, as-salāmu ʿalaynā wa ʿalā ʿibādi llāhi ṣ-ṣāliḥīn, ashhadu an lā ilāha illa llāh, wa ashhadu anna Muḥammadan ʿabduhū wa rasūluh"],
+["Le salam (la fin)","À la dernière rakʿa, après le tachahhoud et la prière sur le Prophète ﷺ, on tourne la tête à droite puis à gauche en disant :","السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ","As-salāmu ʿalaykum wa raḥmatu llāh"]];
+const NAMES=`الرَّحْمَٰنُ|Ar-Raḥmān|Le Tout Miséricordieux;الرَّحِيمُ|Ar-Raḥīm|Le Très Miséricordieux;الْمَلِكُ|Al-Malik|Le Roi;الْقُدُّوسُ|Al-Quddūs|Le Pur;السَّلَامُ|As-Salām|La Paix;الْمُؤْمِنُ|Al-Muʾmin|Celui qui rassure;الْمُهَيْمِنُ|Al-Muhaymin|Celui qui veille sur tout;الْعَزِيزُ|Al-ʿAzīz|Le Tout-Puissant;الْجَبَّارُ|Al-Jabbār|Celui qui contraint et répare;الْمُتَكَبِّرُ|Al-Mutakabbir|Le Suprêmement Grand;الْخَالِقُ|Al-Khāliq|Le Créateur;الْبَارِئُ|Al-Bāriʾ|Celui qui fait exister;الْمُصَوِّرُ|Al-Muṣawwir|Celui qui donne la forme;الْغَفَّارُ|Al-Ghaffār|Celui qui pardonne sans cesse;الْقَهَّارُ|Al-Qahhār|Le Dominateur;الْوَهَّابُ|Al-Wahhāb|Celui qui donne sans compter;الرَّزَّاقُ|Ar-Razzāq|Celui qui nourrit tout le monde;الْفَتَّاحُ|Al-Fattāḥ|Celui qui ouvre;الْعَلِيمُ|Al-ʿAlīm|Celui qui sait tout;الْقَابِضُ|Al-Qābiḍ|Celui qui retient;الْبَاسِطُ|Al-Bāsiṭ|Celui qui donne largement;الْخَافِضُ|Al-Khāfiḍ|Celui qui abaisse;الرَّافِعُ|Ar-Rāfiʿ|Celui qui élève;الْمُعِزُّ|Al-Muʿizz|Celui qui honore;الْمُذِلُّ|Al-Mudhill|Celui qui humilie;السَّمِيعُ|As-Samīʿ|Celui qui entend tout;الْبَصِيرُ|Al-Baṣīr|Celui qui voit tout;الْحَكَمُ|Al-Ḥakam|Le Juge;الْعَدْلُ|Al-ʿAdl|Le Juste;اللَّطِيفُ|Al-Laṭīf|Le Doux, le Bienveillant;الْخَبِيرُ|Al-Khabīr|Celui qui connaît tout en détail;الْحَلِيمُ|Al-Ḥalīm|L'Indulgent;الْعَظِيمُ|Al-ʿAẓīm|L'Immense;الْغَفُورُ|Al-Ghafūr|Celui qui pardonne;الشَّكُورُ|Ash-Shakūr|Celui qui récompense le moindre bien;الْعَلِيُّ|Al-ʿAliyy|Le Très-Haut;الْكَبِيرُ|Al-Kabīr|Le Grand;الْحَفِيظُ|Al-Ḥafīẓ|Celui qui protège;الْمُقِيتُ|Al-Muqīt|Celui qui nourrit et soutient;الْحَسِيبُ|Al-Ḥasīb|Celui qui suffit;الْجَلِيلُ|Al-Jalīl|Le Majestueux;الْكَرِيمُ|Al-Karīm|Le Généreux;الرَّقِيبُ|Ar-Raqīb|Celui qui observe tout;الْمُجِيبُ|Al-Mujīb|Celui qui répond aux invocations;الْوَاسِعُ|Al-Wāsiʿ|Celui dont les bienfaits sont immenses;الْحَكِيمُ|Al-Ḥakīm|Le Sage;الْوَدُودُ|Al-Wadūd|Le Bien-Aimant;الْمَجِيدُ|Al-Majīd|Le Glorieux;الْبَاعِثُ|Al-Bāʿith|Celui qui ressuscite;الشَّهِيدُ|Ash-Shahīd|Le Témoin;الْحَقُّ|Al-Ḥaqq|La Vérité;الْوَكِيلُ|Al-Wakīl|Celui à qui on confie tout;الْقَوِيُّ|Al-Qawiyy|Le Fort;الْمَتِينُ|Al-Matīn|Le Ferme;الْوَلِيُّ|Al-Waliyy|Le Protecteur, l'Allié;الْحَمِيدُ|Al-Ḥamīd|Le Digne de louange;الْمُحْصِي|Al-Muḥṣī|Celui qui compte tout;الْمُبْدِئُ|Al-Mubdiʾ|Celui qui commence la création;الْمُعِيدُ|Al-Muʿīd|Celui qui la recommence;الْمُحْيِي|Al-Muḥyī|Celui qui donne la vie;الْمُمِيتُ|Al-Mumīt|Celui qui donne la mort;الْحَيُّ|Al-Ḥayy|Le Vivant;الْقَيُّومُ|Al-Qayyūm|Celui qui fait tout tenir;الْوَاجِدُ|Al-Wājid|Celui qui ne manque de rien;الْمَاجِدُ|Al-Mājid|Le Noble;الْوَاحِدُ|Al-Wāḥid|L'Unique;الْأَحَدُ|Al-Aḥad|L'Un;الصَّمَدُ|Aṣ-Ṣamad|Celui dont tous ont besoin;الْقَادِرُ|Al-Qādir|Le Capable;الْمُقْتَدِرُ|Al-Muqtadir|Le Tout-Capable;الْمُقَدِّمُ|Al-Muqaddim|Celui qui fait avancer;الْمُؤَخِّرُ|Al-Muʾakhkhir|Celui qui fait reculer;الْأَوَّلُ|Al-Awwal|Le Premier;الْآخِرُ|Al-Ākhir|Le Dernier;الظَّاهِرُ|Aẓ-Ẓāhir|L'Apparent;الْبَاطِنُ|Al-Bāṭin|Le Caché;الْوَالِي|Al-Wālī|Celui qui gouverne tout;الْمُتَعَالِي|Al-Mutaʿālī|Le Très-Élevé;الْبَرُّ|Al-Barr|Le Bienfaisant;التَّوَّابُ|At-Tawwāb|Celui qui accepte le repentir;الْمُنْتَقِمُ|Al-Muntaqim|Celui qui punit les injustes;الْعَفُوُّ|Al-ʿAfuww|Celui qui efface les fautes;الرَّءُوفُ|Ar-Raʾūf|Le Très-Tendre;مَالِكُ الْمُلْكِ|Mālik al-Mulk|Le Maître du royaume;ذُو الْجَلَالِ وَالْإِكْرَامِ|Dhū l-Jalāli wa l-Ikrām|Le Plein de majesté et de générosité;الْمُقْسِطُ|Al-Muqsiṭ|L'Équitable;الْجَامِعُ|Al-Jāmiʿ|Celui qui rassemble;الْغَنِيُّ|Al-Ghaniyy|Celui qui n'a besoin de rien;الْمُغْنِي|Al-Mughnī|Celui qui enrichit;الْمَانِعُ|Al-Māniʿ|Celui qui empêche;الضَّارُّ|Aḍ-Ḍārr|Celui qui peut faire du tort;النَّافِعُ|An-Nāfiʿ|Celui qui accorde le bien;النُّورُ|An-Nūr|La Lumière;الْهَادِي|Al-Hādī|Le Guide;الْبَدِيعُ|Al-Badīʿ|Celui qui crée sans modèle;الْبَاقِي|Al-Bāqī|Celui qui reste pour toujours;الْوَارِثُ|Al-Wārith|L'Héritier de toute chose;الرَّشِيدُ|Ar-Rashīd|Celui qui guide avec sagesse;الصَّبُورُ|Aṣ-Ṣabūr|Le Patient`.split(";").map(x=>x.split("|"));
+const PROPHETS=[
+["Âdam","آدَم","Allah a créé Âdam, le premier homme, à partir d'argile, et lui a appris le nom de toutes choses. Iblîs a refusé de se prosterner devant lui par orgueil. Âdam et Hawwâʾ ont mangé du fruit de l'arbre interdit ; ils ont regretté, demandé pardon, et Allah leur a pardonné.","Quand on se trompe, on demande pardon à Allah."],
+["Noûḥ","نُوح","Noûḥ a appelé son peuple à adorer Allah pendant 950 ans, mais peu l'ont écouté. Allah lui a ordonné de construire une grande arche. Pendant le déluge, les croyants et un couple de chaque animal ont été sauvés.","Être patient, même quand c'est long."],
+["Ibrâhîm","إِبْرَاهِيم","Tout jeune, Ibrâhîm a compris que les statues ne peuvent rien faire. Son peuple l'a jeté dans un grand feu, mais Allah a dit au feu d'être frais et paisible. Plus tard, avec son fils Ismâʿîl, il a construit la Kaaba.","Avoir confiance en Allah."],
+["Yoûsouf","يُوسُف","Ses frères, jaloux, l'ont jeté dans un puits. Vendu en Égypte, puis mis en prison alors qu'il était innocent, il est resté patient. Allah lui a donné le don d'expliquer les rêves, et il est devenu ministre. Il a pardonné à ses frères.","Pardonner, même à ceux qui nous ont fait du mal."],
+["Moûsâ","مُوسَىٰ","Bébé, sa mère l'a posé dans un panier sur le Nil, et il a grandi dans le palais de Pharaon. Allah lui a parlé et l'a envoyé demander à Pharaon de libérer les Banî Isrâʾîl. Avec son bâton, la mer s'est ouverte et les croyants ont été sauvés.","Avoir du courage face à l'injustice."],
+["Yoûnous","يُونُس","Yoûnous a quitté son peuple sans attendre l'ordre d'Allah, et une baleine l'a avalé. Dans le noir, il a invoqué : لَا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ (Lā ilāha illā anta, subḥānaka, innī kuntu mina ẓ-ẓālimīn). Allah l'a sauvé.","Invoquer Allah quand on est en difficulté."],
+["ʿÎsâ","عِيسَىٰ","ʿÎsâ est né de Maryam sans père, par un miracle d'Allah. Bébé, il a parlé dans son berceau. Avec la permission d'Allah, il guérissait les malades. C'est un grand prophète et un serviteur d'Allah.","Les miracles viennent d'Allah."],
+["Muḥammad ﷺ","مُحَمَّد ﷺ","Né à La Mecque, orphelin très jeune, tout le monde l'appelait Al-Amîn, « le digne de confiance ». À 40 ans, dans la grotte de Ḥirâʾ, l'ange Jibrîl lui a apporté le premier verset : اقْرَأْ (Iqraʾ, « Lis ! »). C'est le dernier prophète.","Être honnête et digne de confiance."]];
+const P25="Âdam · Idrîs · Noûḥ · Hoûd · Ṣâliḥ · Ibrâhîm · Loûṭ · Ismâʿîl · Isḥâq · Yaʿqoûb · Yoûsouf · Ayyoûb · Chouʿayb · Moûsâ · Hâroûn · Dhoû l-Kifl · Dâwoûd · Soulaymân · Ilyâs · Al-Yasaʿ · Yoûnous · Zakariyyâ · Yaḥyâ · ʿÎsâ · Muḥammad ﷺ";
+const ISL=[["douas","Douas"],["wudu","Ablutions"],["priere","La prière"],["noms","Les 99 noms"],["prophetes","Les prophètes"]];
+const islFree=k=>PREMIUM||["douas","wudu","priere"].includes(k);
+let isl="douas",wStep=0,nq=null;
+const ok1=(key,i)=>(P[key]||[]).includes(i);
+const toggle1=(key,i)=>{P[key]=P[key]||[];if(P[key].includes(i))P[key]=P[key].filter(x=>x!==i);else{P[key].push(i);addStar()}save()};
+const renderIsl=()=>{let b="";
+  const tabs=`<div class="seg">${ISL.filter(t=>!(GIFT&&!islFree(t[0]))).map(t=>`<button aria-pressed="${t[0]===isl}" data-isl="${t[0]}">${t[1]}${islFree(t[0])?"":" 🔒"}</button>`).join("")}</div>`;
+  if(!islFree(isl))b=lockCard(ISL.find(t=>t[0]===isl)[1]);
+  else if(isl==="douas")b=`<p class="lead">Touche ▶ pour écouter, répète, puis touche « Je la connais » pour gagner une étoile.</p>
+    <details class="help"><summary>🎙 Mettre ta propre voix (ou celle de maman)</summary><ol>
+    <li>Sur l'iPhone, ouvre l'app <b>Dictaphone</b> et enregistre une seule doua.</li>
+    <li>Touche l'enregistrement, puis <b>⋯</b> → <b>Enregistrer dans Fichiers</b>.</li>
+    <li>Reviens ici et touche <b>🎙 Ajouter ma voix</b> sous la bonne doua. Choisis le fichier.</li>
+    <li>Un bouton <b>▶ Ma voix</b> apparaît. Ta voix reste sur ce téléphone seulement.</li></ol></details>
+    <div class="msg ok" id="voiceMsg" aria-live="polite"></div>`+DUAS.map((d,i)=>`<div class="card"><h3>${d[0]}</h3><p class="note" style="margin:0 0 6px">${d[1]}</p>
+    <div class="${d[6]?"q":"ar"}" style="font-size:clamp(26px,5vw,36px);line-height:1.9;text-align:right">${d[2]}</div><div class="tr">${d[3]}</div><div class="fr">${d[4]}</div>
+    ${DNOTE[i]?`<p class="note" style="margin:6px 0 0">${DNOTE[i]}</p>`:""}
+    <div class="row" style="margin-top:10px">${d[5]?`<button class="pri" data-aud="${d[5]}">▶ Écouter</button>`:`<button class="pri" data-say="${d[2]}">🔊 Écouter (voix du téléphone)</button>`}
+    ${myVoices.has(i)?`<button class="gold" data-myv="${i}">▶ Ma voix</button><button data-delv="${i}" aria-label="Supprimer ma voix">🗑</button>`:`<button data-addv="${i}">🎙 Ajouter ma voix</button>`}
+    <button data-dua="${i}" class="${ok1("duas",i)?"right":""}">${ok1("duas",i)?"★ Je la connais":"Je la connais"}</button></div></div>`).join("");
+  else if(isl==="wudu"){const w=WUDU[wStep];b=`<p class="lead">Le woudou (les ablutions) se fait avant la prière, pour être propre. Suis les étapes une par une, avec de l'eau propre.</p>
+    <div class="card" style="text-align:center"><div class="dots" style="justify-content:center">${WUDU.map((_,i)=>`<span class="${i<wStep?"d":""} ${i===wStep?"c":""}">${i+1}</span>`).join("")}</div>
+    <h3 style="font-size:28px">${wStep+1}. ${w[0]}</h3><p style="font-size:20px">${w[1]}</p>
+    <div class="row" style="justify-content:center"><button id="wPrev" ${wStep?"":"disabled"}>← Avant</button>${wStep<WUDU.length-1?`<button class="pri" id="wNext">Étape suivante →</button>`:`<button class="gold" id="wDone">J'ai fini mes ablutions ★</button>`}</div></div>
+    <div class="card"><h3>Toutes les étapes</h3><ol>${WUDU.map(x=>`<li><b>${x[0]}</b> : ${x[1]}</li>`).join("")}</ol>
+    <p><b>Ce qui annule les ablutions</b> (il faut les refaire) : aller aux toilettes, les gaz, un sommeil profond.</p></div>`}
+  else if(isl==="priere")b=`<p class="lead">Le musulman prie 5 fois par jour. Une prière est faite de plusieurs rakʿa (unités). Avant de prier, on fait ses ablutions.</p>
+    <div class="card"><h3>Les 5 prières</h3><table><thead><tr><th>Prière</th><th>Quand</th><th>Rakʿa</th></tr></thead><tbody>${PRAY.map(p=>`<tr><td><b>${p[0]}</b></td><td>${p[1]}</td><td style="text-align:right">${p[2]}</td></tr>`).join("")}</tbody></table>
+    <p class="note">Les heures changent chaque jour : demande-les à ta mosquée ou regarde un calendrier de prière.</p></div>
+    <div class="card"><h3>Une rakʿa, étape par étape</h3>${RAKA.map((r,i)=>`<div class="step" style="display:block;margin-bottom:8px"><b>${i+1}. ${r[0]}</b><div>${r[1]}</div>
+    ${r[2]?`<div class="ar" style="font-size:clamp(24px,5vw,32px);line-height:1.9;text-align:right">${r[2]}</div><div class="tr">${r[3]}</div><button data-say="${r[2]}" style="margin-top:6px">🔊 Écouter</button>`:""}</div>`).join("")}</div>`;
+  else if(isl==="noms"){b=`<p class="lead">Le Prophète ﷺ a dit qu'Allah a 99 noms, et que celui qui les connaît et les vit entrera au Paradis. Touche un nom pour l'écouter.</p>
+    <div class="card quiz" id="nquiz"></div><div class="sgrid">${NAMES.map((n,i)=>`<button class="sc ${ok1("names",i)?"right":""}" data-name="${i}"><small>${i+1}</small><span class="ar" style="font-size:28px">${n[0]}</span><b>${n[1]}</b><small>${n[2]}</small></button>`).join("")}</div>
+    <p class="note">Cette liste est celle rapportée par At-Tirmidhî, la plus connue ; les savants ont aussi cité d'autres listes.</p>`}
+  else b=`<p class="lead">Le Coran cite 25 prophètes. Voici l'histoire de 8 d'entre eux, racontée simplement.</p>`+PROPHETS.map(p=>`<div class="card"><h3>${p[0]} <span class="ar">${p[1]}</span></h3><p>${p[2]}</p><p><b>Leçon :</b> ${p[3]}</p></div>`).join("")+
+    `<div class="card"><h3>Les 25 prophètes cités dans le Coran</h3><p>${P25}</p></div>`;
+  $("islBox").innerHTML=`<h2>Douas, prière et Islam</h2>${tabs}${b}`;if(isl==="noms"&&PREMIUM)nQ()};
+const nQ=()=>{if(!$("nquiz"))return;const a=Math.floor(Math.random()*NAMES.length),o=shuffle([a,...shuffle(NAMES.map((_,i)=>i).filter(i=>i!==a)).slice(0,2)]);nq={a};
+  $("nquiz").innerHTML=`<div class="ask">Que veut dire ce nom ?<span class="ar" style="font-size:clamp(44px,10vw,70px)">${NAMES[a][0]}</span>${NAMES[a][1]}</div>
+  <div class="opts" style="grid-template-columns:minmax(0,1fr)">${o.map(i=>`<button data-no="${i}">${NAMES[i][2]}</button>`).join("")}</div>`};
+$("islBox").addEventListener("click",e=>{const t=e.target,id=t.closest("button")?.id;
+  const s=t.closest("[data-isl]");if(s){stopAudio();isl=s.dataset.isl;renderIsl();return}
+  const a=t.closest("[data-aud]");if(a){if(playing)stopAudio();else playList([{src:a.dataset.aud,k:-1}],x=>{playing=!!x;a.textContent=x?"⏸ Arrêter":"▶ Écouter"});return}
+  const av=t.closest("[data-addv]");if(av){voiceFor=+av.dataset.addv;voiceIn.click();return}
+  const mv=t.closest("[data-myv]");if(mv){vStore("readonly",st=>st.get(+mv.dataset.myv)).then(b=>{if(b)playList([{src:URL.createObjectURL(b),k:-1}],x=>{playing=!!x})});return}
+  const dv=t.closest("[data-delv]");if(dv){const i=+dv.dataset.delv;vStore("readwrite",st=>st.delete(i)).then(()=>{myVoices.delete(i);renderIsl()});return}
+  const d=t.closest("[data-dua]");if(d){toggle1("duas",+d.dataset.dua);renderIsl();return}
+  if(id==="wNext"){wStep++;renderIsl();return}if(id==="wPrev"){wStep--;renderIsl();return}
+  if(id==="wDone"){wStep=0;addStar(2);renderIsl();$("islBox").insertAdjacentHTML("afterbegin",`<div class="msg ok">Bravo ! Tes ablutions sont faites. ★ +2</div>`);return}
+  const n=t.closest("[data-name]");if(n){const i=+n.dataset.name;say(NAMES[i][0]);if(!ok1("names",i)){toggle1("names",i);n.classList.add("right")}return}
+  const no=t.closest("[data-no]");if(no&&!nq.done){nq.done=1;const ok=+no.dataset.no===nq.a;no.classList.add(ok?"right":"wrong");
+    if(!ok)$("nquiz").querySelector(`[data-no="${nq.a}"]`).classList.add("right");else addStar();say(NAMES[nq.a][0]);setTimeout(nQ,ok?900:1800)}});
+
+/* ================= PARENTS ================= */
+let confirmReset=false;
+const streak=()=>{let n=0,d=today();if(!P.days[d])d=addDays(d,-1);while(P.days[d]){n++;d=addDays(d,-1)}return n};
+const renderPar=()=>{if(!PREMIUM){$("parBox").innerHTML=`<h2>Espace parents</h2>`+lockCard("L'espace parents");return}
+  const tStars=P.days[today()]||0,learned=S.filter(isLearned),verses=S.reduce((a,s)=>a+(isLearned(s)?s.v.length:vd(s).length),0);
+  $("parBox").innerHTML=`<h2>Espace parents</h2><p class="lead">Suivez les progrès de chaque enfant. Les données restent sur cet appareil.</p>
+  <div class="card"><h3>Profils (enfants, grands-parents…)</h3><p class="note" style="margin-top:0">Chaque personne a son propre profil et ses propres étoiles. Écris un prénom puis touche « Ajouter ».</p><div class="row">
+   <select id="pSel" aria-label="Choisir un enfant">${Object.keys(DB.p).map(n=>`<option ${n===DB.cur?"selected":""}>${n.replace(/</g,"&lt;")}</option>`).join("")}</select>
+   <input id="pNew" placeholder="Prénom" aria-label="Prénom du nouvel enfant" maxlength="20"><button class="pri" id="pAdd">Ajouter</button></div></div>
+  <div class="card"><h3>Aujourd'hui</h3><div class="bar" style="height:20px"><i style="width:${Math.min(100,tStars/P.goal*100)}%"></i></div>
+   <p>${tStars} étoiles sur un objectif de <select id="pGoal" aria-label="Objectif d'étoiles par jour">${[5,10,15,20,30].map(g=>`<option ${g===P.goal?"selected":""}>${g}</option>`).join("")}</select> par jour</p></div>
+  <div class="stats">
+   <div class="stat"><b>${P.stars}</b>étoiles</div><div class="stat"><b>${streak()}</b>jours de suite</div>
+   <div class="stat"><b>${P.seen.length}/28</b>lettres vues</div><div class="stat"><b>${P.traced.length}/28</b>lettres écrites</div>
+   <div class="stat"><b>${P.quizBest}/10</b>meilleur quiz</div><div class="stat"><b>${learned.length}/${S.length}</b>sourates sues</div>
+   <div class="stat"><b>${verses}</b>versets appris</div><div class="stat"><b>${(P.duas||[]).length}/${DUAS.length}</b>douas sues</div><div class="stat"><b>${(P.names||[]).length}/99</b>noms d'Allah vus</div><div class="stat"><b>${due().length}</b>révisions à faire</div></div>
+  <div class="card" style="margin-top:18px"><h3>Sourates</h3><table><thead><tr><th>Sourate</th><th>Avancement</th><th>Prochaine révision</th></tr></thead><tbody>
+   ${S.map(s=>`<tr><td>${s.fr}</td><td>${isLearned(s)?"★ Sue":vd(s).length+"/"+s.v.length+" versets"}</td><td>${P.learned[s.n]?fmt(P.learned[s.n].due):"—"}</td></tr>`).join("")}</tbody></table></div>
+  <div class="row"><button id="pReset">${confirmReset?"Confirmer : tout effacer pour "+P.name:"Remettre à zéro ce profil"}</button>${confirmReset?`<button id="pCancel">Annuler</button>`:""}</div>`};
+$("parBox").addEventListener("click",e=>{const id=e.target.closest("button")?.id;
+  if(id==="pAdd"){const n=$("pNew").value.trim();if(!n)return;if(!DB.p[n])DB.p[n]=blank(n);switchTo(n)}
+  if(id==="pReset"){if(confirmReset){DB.p[DB.cur]=blank(DB.cur);confirmReset=false;switchTo(DB.cur)}else{confirmReset=true;renderPar()}}
+  if(id==="pCancel"){confirmReset=false;renderPar()}});
+$("parBox").addEventListener("change",e=>{if(e.target.id==="pSel")switchTo(e.target.value);if(e.target.id==="pGoal"){P.goal=+e.target.value;save();renderPar()}});
+const switchTo=n=>{DB.cur=n;P=DB.p[n];save();head();renderGrid();renderDetail();renderSurahs();renderSurah();renderRev();renderPar()};
+
+/* ================= ROUTAGE ================= */
+const views=TABS.map(t=>t[0]).filter(v=>!HIDE.includes(v));
+if(GIFT&&!PREMIUM)document.querySelectorAll('.hcard[href="#lire"],.hcard[href="#tajwid"]').forEach(a=>a.remove());
+else if(!PREMIUM)document.querySelectorAll('.hcard[href="#lire"] b,.hcard[href="#tajwid"] b').forEach(b=>b.textContent+=" 🔒");
+$("facts").innerHTML=FACTS.map(f=>`<div class="fact"><b>${f[0]}</b>${f[1]}</div>`).join("");
+const kid=GIFT?"Samia":"";let opened=false;try{opened=localStorage.getItem("samiaGift")==="1"}catch(e){}
+if(GIFT&&!opened)$("wel").classList.add("on");
+$("welGo").onclick=()=>{try{localStorage.setItem("samiaGift","1")}catch(e){}$("wel").classList.remove("on");location.hash="accueil";route()};
+let big=false;try{big=localStorage.getItem("samiaBig")==="1"}catch(e){}
+const setBig=()=>{document.documentElement.classList.toggle("xl",big);$("bigBtn").setAttribute("aria-pressed",big);$("bigBtn").textContent=big?"Aa−":"Aa+"};
+$("bigBtn").onclick=()=>{big=!big;try{localStorage.setItem("samiaBig",big?"1":"0")}catch(e){}setBig()};setBig();
+const route=()=>{const h=location.hash.slice(1),v=views.includes(h)?h:"accueil";if(v!=="coran"&&v!=="accueil")stopAudio();window.scrollTo(0,0);
+  {const nm=GIFT&&kid?kid:PREMIUM&&!/^Mon enfant$/.test(P.name)?P.name:"";$("hello").textContent="Assalâmou ʿalaykoum"+(nm?", "+nm:"")+" !"}
+  views.forEach(x=>$("v-"+x).classList.toggle("on",x===v));
+  document.querySelectorAll("nav a").forEach(a=>a.toggleAttribute("aria-current",a.getAttribute("href")==="#"+v));
+  if(v==="ecrire"){renderSeg();const go=()=>setupCanvas();try{document.fonts.load('700 100px "Noto Naskh Arabic"',"ب").then(go,go)}catch(e){go()}}
+  if(v==="parents"){confirmReset=false;renderPar()}if(v==="coran")renderRev()};
+head();renderGrid();renderDetail();renderLire();renderGameSeg();newGame();renderSurahs();renderSurah();renderRev();renderTaj();renderIsl();
+addEventListener("hashchange",route);route();
+}
+</script>
+</body>
+</html>
