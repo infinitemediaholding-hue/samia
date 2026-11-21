@@ -2720,6 +2720,15 @@ ${a}${extra}</svg>`;
       btn.classList.remove("talking");
       if (done) done();
     };
+    if (S.settings.voice && droid) {
+      try {
+        droid.speak(text.replace(/[«»"]/g, ""), S.settings.rate || 0.95, S.settings.pitch || 1);
+      } catch (e) {
+      }
+      btn.classList.add("talking");
+      setTimeout(end, 900 + text.length * 70);
+      return;
+    }
     if (!S.settings.voice || !synth) {
       setTimeout(end, Math.min(2500, 500 + text.length * 40));
       return;
@@ -3634,7 +3643,7 @@ ${a}${extra}</svg>`;
       <label>Vitesse de la voix<input type="range" id="sRate" min="0.7" max="1.2" step="0.05" value="${S.settings.rate}"></label>
       <label>Hauteur de la voix<input type="range" id="sPitch" min="0.8" max="1.4" step="0.05" value="${S.settings.pitch}"></label>
       <p class="note">Astuce pour une voix encore plus naturelle : sur la tablette, ouvre <b>R\xE9glages \u203A Accessibilit\xE9 \u203A Contenu \xE9nonc\xE9 \u203A Voix \u203A Fran\xE7ais</b> et t\xE9l\xE9charge une voix marqu\xE9e \xAB Am\xE9lior\xE9e \xBB ou \xAB Premium \xBB (gratuit). Elle appara\xEEtra ici.</p>
-      <div class="line"><span class="note" style="margin:0">${!synth ? "Cet appareil ne propose pas de synth\xE8se vocale : les consignes s\u2019affichent dans la bulle de Lumi." : voices.length ? `${voices.length} voix fran\xE7aise${voices.length > 1 ? "s" : ""} trouv\xE9e${voices.length > 1 ? "s" : ""}.` : "Aucune voix fran\xE7aise d\xE9tect\xE9e pour l\u2019instant : le texte reste affich\xE9 dans la bulle."}</span><button class="btn" id="sTest">Tester</button></div>
+      <div class="line"><span class="note" style="margin:0">${droid ? "Appli Android : la voix est celle de la synth\xE8se vocale de la tablette (Param\xE8tres \u203A Gestion globale \u203A Synth\xE8se vocale)." : !synth ? "Cet appareil ne propose pas de synth\xE8se vocale : les consignes s\u2019affichent dans la bulle de Lumi." : voices.length ? `${voices.length} voix fran\xE7aise${voices.length > 1 ? "s" : ""} trouv\xE9e${voices.length > 1 ? "s" : ""}.` : "Aucune voix fran\xE7aise d\xE9tect\xE9e pour l\u2019instant : le texte reste affich\xE9 dans la bulle."}</span><button class="btn" id="sTest">Tester</button></div>
       <label>Pr\xE9nom de l'enfant<input id="sName" value="${esc2(S.profile.name)}" maxlength="12" style="font:inherit;font-size:16px;padding:6px 10px;border-radius:10px;border:1px solid #cfd6e3;width:150px"></label>
     </div>
     <h3>Mondes accessibles</h3><div class="set">${WORLDS.map((w) => `<label>${w.name}<input type="checkbox" data-w="${w.id}" ${S.settings.worlds[w.id] ? "checked" : ""}></label>`).join("")}</div>
@@ -3787,7 +3796,8 @@ ${a}${extra}</svg>`;
       tone2(1318, 0.08, 0.16, "sine", 0.05);
     }
   };
-  const synth = "speechSynthesis" in window ? window.speechSynthesis : null;
+  const droid = window.AndroidTTS && typeof window.AndroidTTS.speak === "function" ? window.AndroidTTS : null;
+  const synth = !droid && "speechSynthesis" in window ? window.speechSynthesis : null;
   let frVoice = null, instruction = "", bubbleTimer = 0;
   if (synth) {
     pickVoice2();
@@ -4391,6 +4401,10 @@ ${a}${extra}</svg>`;
   $("#btnHome").addEventListener("click", () => {
     sfx.tap();
     if (synth) synth.cancel();
+    if (droid) try {
+      droid.stop();
+    } catch (e) {
+    }
     showHome2();
   });
   $("#btnListen").addEventListener("click", () => {
