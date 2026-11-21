@@ -1,5 +1,5 @@
 /* Service worker : garde l'application disponible sans internet après la première visite. */
-const CACHE = 'issam-v4';
+const CACHE = 'issam-v5';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
