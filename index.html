@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Samia">
+<meta name="apple-mobile-web-app-title" content="Samia Muslim Pro">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#d4c0f0">
 <link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-180.png">
-<title>Samia</title>
+<title>Samia Muslim Pro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Noto+Naskh+Arabic:wght@500;700&family=Amiri+Quran&display=swap" rel="stylesheet">
 <style>
@@ -177,6 +179,20 @@ html.gift .welcome{background:linear-gradient(#fff,#fff) padding-box,linear-grad
 @keyframes wave{0%,100%{transform:rotate(0)}25%{transform:rotate(18deg)}75%{transform:rotate(-12deg)}}
 .hello .hand{font-size:40px;display:inline-block;transform-origin:70% 80%;animation:wave 1.6s ease-in-out 2}
 
+/* darija (Samia) */
+.themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+.themes button{flex-direction:column;min-height:110px;border-radius:22px;gap:2px}
+.themes .ti{font-size:34px;line-height:1.1}.themes small{color:var(--mute);font-weight:500}
+.words{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.wcard{background:#fff;border-radius:20px;padding:12px 14px;box-shadow:0 3px 0 #ddd0f2,0 8px 20px rgba(90,50,150,.07);display:flex;align-items:center;gap:12px;text-align:start;cursor:pointer;border:0;font:inherit;color:inherit;min-height:84px}
+.wcard .lat{font-size:22px;font-weight:800;color:#6a3fb0;display:block;line-height:1.1}
+.wcard .arw{font-family:"Noto Naskh Arabic",serif;font-size:20px;color:#d6336c;display:block;direction:rtl}
+.wcard .fr2{color:var(--mute);font-size:15px;display:block}
+.wcard .sp{margin-inline-start:auto;font-size:22px}
+.code{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.code span{background:#f3e8ff;border-radius:12px;padding:4px 12px;font-weight:700}
+html.gift .hcard.dar{background:linear-gradient(135deg,#ff6fa8,#ffb86b);color:#fff;box-shadow:0 5px 0 #c23b74}
+html.gift .hcard.dar .ar,html.gift .hcard.dar span:last-child{color:#fff}
 .note{font-size:14px;color:var(--mute);margin-top:14px}
 @media(max-width:700px){.detail{grid-template-columns:minmax(0,1fr)}nav a{font-size:15px;padding:10px 12px}.memo{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -186,7 +202,7 @@ html.gift .welcome{background:linear-gradient(#fff,#fff) padding-box,linear-grad
 <body>
 <header>
   <div class="top">
-    <h1>Samia <span>سَامِيَة</span><span class="badge" id="edition"></span></h1>
+    <h1>Samia <small style="font-size:.5em;font-weight:700;opacity:.8">Muslim Pro</small> <span>سَامِيَة</span><span class="badge" id="edition"></span></h1>
     <div class="row"><button id="bigBtn" class="hbtn" aria-pressed="false" title="Texte plus grand">Aa+</button>
     <div class="stars" aria-live="polite"><span id="who"></span> <b id="starCount">0</b> ★</div></div>
   </div>
@@ -199,6 +215,7 @@ html.gift .welcome{background:linear-gradient(#fff,#fff) padding-box,linear-grad
     <p class="lead">Que veux-tu faire aujourd'hui ? Touche une grande carte.</p>
     <div class="home">
       <a class="btn hcard coran" href="#coran"><span class="ar">القُرْآن</span><b>J'apprends le Coran</b><span>Écouter, répéter, réciter par cœur</span></a>
+      <a class="btn hcard dar" href="#darija"><span class="ar">الدارجة</span><b>Darija de Casablanca 🇲🇦</b><span>Parler comme à Casa</span></a>
       <a class="btn hcard" href="#islam"><span class="ar">دُعَاء</span><b>Douas et prière</b><span>Invocations, ablutions, 99 noms, prophètes</span></a>
       <a class="btn hcard" href="#lettres"><span class="ar">ا ب ت</span><b>Les lettres</b><span>Écouter les 28 lettres</span></a>
       <a class="btn hcard" href="#ecrire"><span class="ar">✍</span><b>J'écris</b><span>Tracer les lettres avec le doigt</span></a>
@@ -264,6 +281,7 @@ html.gift .welcome{background:linear-gradient(#fff,#fff) padding-box,linear-grad
     <p class="note">Le texte est affiché avec ses voyelles. Pour la prononciation exacte (tajwid), écoute toujours un récitateur et fais-toi corriger par un adulte ou un enseignant.</p>
   </section>
 
+  <section id="v-darija"><div id="darBox"></div></section>
   <section id="v-islam"><div id="islBox"></div></section>
   <section id="v-tajwid"><div id="tajBox"></div></section>
   <section id="v-parents"><div id="parBox"></div></section>
@@ -455,7 +473,7 @@ const SUNMOON=[["الْقَمَر",0],["الْكِتَاب",0],["الْفِيل"
  ["الشَّمْس",1],["النَّاس",1],["الرَّحْمَٰن",1],["الدِّين",1],["الصِّرَاط",1],["التُّفَّاحَة",1],["السَّمَكَة",1],["الزَّرَافَة",1]];
 
 /* ================= MÉMOIRE ================= */
-const blank=n=>({name:n,stars:0,duas:[],names:[],seen:[],traced:[],quizBest:0,vdone:{},learned:{},days:{},goal:10});
+const blank=n=>({dar:{},dw:[],name:n,stars:0,duas:[],names:[],seen:[],traced:[],quizBest:0,vdone:{},learned:{},days:{},goal:10});
 let DB={cur:"Mon enfant",p:{}};
 try{const s=JSON.parse(localStorage.getItem(PREMIUM?"lawhFam":"lawh")||"null");if(s&&s.p)DB=s;else if(s&&!PREMIUM)DB.p["Mon enfant"]=Object.assign(blank("Mon enfant"),{stars:s.stars||0,seen:s.seen||[]})}catch(e){}
 if(!DB.p[DB.cur])DB.p[DB.cur]=blank(DB.cur);
@@ -481,7 +499,7 @@ const lockCard=what=>`<div class="card lock"><h3>🔒 ${what} — dans la Versio
 <p class="note">Demande à tes parents.</p></div>`;
 
 /* ================= NAVIGATION ================= */
-const TABS=[["accueil","Accueil"],["lettres","Lettres"],["lire","Lire"],["ecrire","Écrire"],["jouer","Jouer"],["coran","Coran"],["islam","Douas & prière"],["tajwid","Tajwid"],["parents","Parents"]];
+const TABS=[["accueil","Accueil"],["lettres","Lettres"],["lire","Lire"],["ecrire","Écrire"],["jouer","Jouer"],["coran","Coran"],["darija","Darija 🇲🇦"],["islam","Douas & prière"],["tajwid","Tajwid"],["parents","Parents"]];
 const HIDE=GIFT&&!PREMIUM?["lire","tajwid","parents"]:[];
 $("nav").innerHTML=TABS.filter(t=>!HIDE.includes(t[0])).map(t=>`<a href="#${t[0]}">${t[1]}${!PREMIUM&&["lire","tajwid","parents"].includes(t[0])?" 🔒":""}</a>`).join("");
 $("edition").textContent=PREMIUM?"Famille":"Gratuit";if(GIFT)$("edition").remove();
@@ -825,6 +843,39 @@ $("islBox").addEventListener("click",e=>{const t=e.target,id=t.closest("button")
   const no=t.closest("[data-no]");if(no&&!nq.done){nq.done=1;const ok=+no.dataset.no===nq.a;no.classList.add(ok?"right":"wrong");
     if(!ok)$("nquiz").querySelector(`[data-no="${nq.a}"]`).classList.add("right");else addStar();say(NAMES[nq.a][0]);setTimeout(nQ,ok?900:1800)}});
 
+const renderBadges=()=>{};
+/* ================= DARIJA ================= */
+const DAR=[{"t": "Dire bonjour", "ico": "👋", "w": [["Salam", "سلام", "Salut / Bonjour"], ["Labas ?", "لاباس؟", "Ça va ?"], ["Labas, l7amdoulillah", "لاباس، الحمد لله", "Ça va, grâce à Dieu"], ["Sba7 lkhir", "صباح الخير", "Bonjour (le matin)"], ["Msa lkhir", "مسا الخير", "Bonsoir"], ["Mer7ba", "مرحبا", "Bienvenue"], ["Bslama", "بسلامة", "Au revoir"], ["Chokran", "شكرا", "Merci"], ["Bla jmil", "بلا جميل", "De rien"], ["Smh liya", "سمح ليا", "Pardon / Excuse-moi"], ["Chno smitek ?", "شنو سميتك؟", "Comment tu t'appelles ?"], ["Smiti...", "سميتي...", "Je m'appelle..."]]}, {"t": "La famille", "ico": "👨‍👩‍👧‍👦", "w": [["Mama", "ماما", "Maman"], ["Baba", "بابا", "Papa"], ["Khouya", "خويا", "Mon frère"], ["Khti", "ختي", "Ma sœur"], ["Jeddi", "جدي", "Mon grand-père"], ["Jedda", "جدة", "Grand-mère"], ["3ammi", "عمي", "Mon oncle (côté papa)"], ["Khali", "خالي", "Mon oncle (côté maman)"], ["3ammti", "عمتي", "Ma tante (côté papa)"], ["Khalti", "خالتي", "Ma tante (côté maman)"], ["Drari", "دراري", "Les enfants"], ["L3a2ila", "العائلة", "La famille"]]}, {"t": "Compter", "ico": "🔢", "w": [["Wa7ed", "واحد", "Un (1)"], ["Jouj", "جوج", "Deux (2)"], ["Tlata", "تلاتة", "Trois (3)"], ["Rb3a", "ربعة", "Quatre (4)"], ["Khamsa", "خمسة", "Cinq (5)"], ["Stta", "ستة", "Six (6)"], ["Sb3a", "سبعة", "Sept (7)"], ["Tmnya", "تمنية", "Huit (8)"], ["Ts3oud", "تسعود", "Neuf (9)"], ["3chra", "عشرة", "Dix (10)"]]}, {"t": "Les couleurs", "ico": "🎨", "w": [["7mer", "حمر", "Rouge"], ["Khder", "خضر", "Vert"], ["Zre9", "زرق", "Bleu"], ["Sfer", "صفر", "Jaune"], ["K7el", "كحل", "Noir"], ["Byed", "بيض", "Blanc"], ["9ehwi", "قهوي", "Marron"], ["Wardi", "وردي", "Rose"]]}, {"t": "À table", "ico": "🍽️", "w": [["Khobz", "خبز", "Du pain"], ["Lma", "الما", "L'eau"], ["Atay", "أتاي", "Le thé"], ["7lib", "حليب", "Le lait"], ["Djaj", "دجاج", "Du poulet"], ["L7out", "الحوت", "Le poisson"], ["Kseksou", "كسكسو", "Le couscous"], ["Btata", "بطاطا", "Les pommes de terre"], ["Ana ji3an", "أنا جيعان", "J'ai faim (garçon)"], ["Bghit nakol", "بغيت ناكل", "Je veux manger"], ["Bnin !", "بنين!", "C'est bon ! (délicieux)"], ["Chb3t", "شبعت", "J'ai assez mangé"]]}, {"t": "Mots magiques", "ico": "✨", "w": [["Iyeh", "إيه", "Oui"], ["La", "لا", "Non"], ["Wakha", "واخا", "D'accord"], ["3afak", "عافاك", "S'il te plaît"], ["Bghit", "بغيت", "Je veux"], ["Fin ?", "فين؟", "Où ?"], ["Chno ?", "شنو؟", "Quoi ?"], ["3lach ?", "علاش؟", "Pourquoi ?"], ["Imta ?", "إمتى؟", "Quand ?"], ["Ch7al ?", "شحال؟", "Combien ?"], ["Mafhemtch", "ما فهمتش", "Je n'ai pas compris"], ["Ma3reftch", "ما عرفتش", "Je ne sais pas"], ["Mzyan", "مزيان", "Bien / Bon"], ["Zwin", "زوين", "Beau / Joli"], ["Bzzaf", "بزاف", "Beaucoup"], ["Chwiya", "شوية", "Un peu"], ["Yallah !", "يالاه!", "Allez ! On y va !"]]}, {"t": "Le temps", "ico": "⏰", "w": [["Daba", "دابا", "Maintenant"], ["Lyoum", "اليوم", "Aujourd'hui"], ["Ghedda", "غدا", "Demain"], ["Lbare7", "البارح", "Hier"], ["Sba7", "الصباح", "Le matin"], ["L3chiya", "العشية", "L'après-midi"], ["Lil", "الليل", "La nuit"]]}, {"t": "Maison et école", "ico": "🏠", "w": [["Ddar", "الدار", "La maison"], ["Lbit", "البيت", "La chambre"], ["Lkouzina", "الكوزينة", "La cuisine"], ["Lbab", "الباب", "La porte"], ["Ttbla", "الطبلة", "La table"], ["Lkorsi", "الكرسي", "La chaise"], ["Lmdrasa", "المدرسة", "L'école"], ["Lktab", "الكتاب", "Le livre"], ["Lmo3allim", "المعلم", "Le professeur"], ["Sa7bi", "صاحبي", "Mon ami"]]}];
+const dfn=(t,w)=>"audio/darija/"+t+"_"+w+".mp3";
+let dT=-1,dq=null;
+const darDone=t=>(P.dar||{})[t]>=5;
+const renderDar=()=>{let b="";
+  if(dT<0){b=`<h2>J'apprends la darija de Casablanca 🇲🇦</h2><p class="lead">Le darija, c'est l'arabe qu'on parle au Maroc, à la maison et dans la rue. Choisis un thème, écoute les mots, puis réussis le quiz (5/5) pour gagner le badge du thème.</p>
+  <div class="card"><h3>🔐 Le code secret des chiffres</h3><p style="margin:0">Pour écrire le darija avec nos lettres, on utilise des chiffres à la place de sons qui n'existent pas en français :</p>
+  <div class="code"><span>3 = ع (ʿayn)</span><span>7 = ح (ḥ, un « h » soufflé)</span><span>9 = ق (q, du fond de la gorge)</span><span>2 = ء (petit arrêt)</span><span>kh = خ (comme la jota espagnole)</span><span>gh = غ (comme un « r » roulé de la gorge)</span></div></div>
+  <div class="themes">${DAR.map((t,i)=>`<button data-dt="${i}"><span class="ti">${t.ico}</span><b>${t.t}</b><small>${t.w.length} mots ${darDone(i)?"· ✅":""}</small></button>`).join("")}</div>`}
+  else{const t=DAR[dT];b=`<div class="row" style="margin-bottom:12px"><button data-dt="-1">← Tous les thèmes</button><h2 style="margin:0">${t.ico} ${t.t}</h2></div>
+  <p class="lead">Touche un mot pour l'écouter (voix marocaine), répète-le à voix haute. Ensuite, passe le quiz !</p>
+  <div class="words">${t.w.map((w,j)=>`<button class="wcard" data-dw="${j}"><span><span class="lat">${w[0]}</span><span class="arw">${w[1]}</span><span class="fr2">${w[2]}</span></span><span class="sp" aria-hidden="true">🔊</span></button>`).join("")}</div>
+  <div class="card quiz" id="dquiz" style="margin-top:18px"></div>
+  <p class="note">Voix de synthèse marocaine (ce n'est pas une vraie personne). Le darija varie selon les villes : demande à ta famille comment elle le dit !</p>`}
+  $("darBox").innerHTML=b;if(dT>=0)dQ(true)};
+const dQ=reset=>{const el=$("dquiz");if(!el)return;if(reset||!dq||dq.t!==dT)dq={t:dT,n:0,sc:0};const t=DAR[dT];
+  if(dq.n>=5){const best=Math.max((P.dar||{})[dT]||0,dq.sc);P.dar=Object.assign(P.dar||{},{[dT]:best});save();renderBadges();
+    el.innerHTML=`<div class="ask">${dq.sc===5?"🏅 Parfait ! Badge « "+t.t+" » gagné !":"Score : "+dq.sc+" / 5"}</div><p>${dq.sc===5?"Tu parles comme une vraie Casaouie 😍":"Il faut 5/5 pour le badge, Samia. Réécoute les mots et retente !"}</p><button class="pri" id="dAgain">Rejouer le quiz</button>`;return}
+  const a=Math.floor(Math.random()*t.w.length),mode=Math.random()<.5,o=shuffle([a,...shuffle(t.w.map((_,i)=>i).filter(i=>i!==a)).slice(0,3)]);dq.a=a;dq.done=0;
+  el.innerHTML=`<p style="margin:0">Quiz ${dq.n+1} / 5</p><div class="ask">${mode?`Comment dit-on « <b>${t.w[a][2]}</b> » ?`:`Que veut dire <b style="color:#0b4f79">${t.w[a][0]}</b> ?<span class="ar" style="font-size:44px">${t.w[a][1]}</span>`}</div>
+  <button data-daud="${a}" style="margin-bottom:12px">🔊 Écouter</button>
+  <div class="opts">${o.map(i=>`<button data-do="${i}">${mode?t.w[i][0]:t.w[i][2]}</button>`).join("")}</div>`;if(!mode)playList([{src:dfn(dT,a),k:-1}])};
+$("darBox").addEventListener("click",e=>{const t=e.target;
+  const th=t.closest("[data-dt]");if(th){dT=+th.dataset.dt;renderDar();window.scrollTo(0,0);return}
+  const w=t.closest("[data-dw]");if(w){const j=+w.dataset.dw;playList([{src:dfn(dT,j),k:-1}]);P.dw=P.dw||[];const key=dT+"_"+j;if(!P.dw.includes(key)){P.dw.push(key);save();if(P.dw.length%5===0)addStar(1);renderBadges()}return}
+  const da=t.closest("[data-daud]");if(da){playList([{src:dfn(dT,+da.dataset.daud),k:-1}]);return}
+  if(t.closest("#dAgain")){dQ(true);return}
+  const o=t.closest("[data-do]");if(o&&!dq.done){dq.done=1;const ok=+o.dataset.do===dq.a;o.classList.add(ok?"right":"wrong");
+    if(!ok)$("dquiz").querySelector(`[data-do="${dq.a}"]`).classList.add("right");else{dq.sc++;addStar(1)}
+    playList([{src:dfn(dT,dq.a),k:-1}]);dq.n++;setTimeout(()=>dQ(false),ok?1100:1900)}});
+
 /* ================= PARENTS ================= */
 let confirmReset=false;
 const streak=()=>{let n=0,d=today();if(!P.days[d])d=addDays(d,-1);while(P.days[d]){n++;d=addDays(d,-1)}return n};
@@ -867,10 +918,11 @@ const route=()=>{const h=location.hash.slice(1),v=views.includes(h)?h:"accueil";
   views.forEach(x=>$("v-"+x).classList.toggle("on",x===v));
   document.querySelectorAll("nav a").forEach(a=>a.toggleAttribute("aria-current",a.getAttribute("href")==="#"+v));
   if(v==="ecrire"){renderSeg();const go=()=>setupCanvas();try{document.fonts.load('700 100px "Noto Naskh Arabic"',"ب").then(go,go)}catch(e){go()}}
-  if(v==="parents"){confirmReset=false;renderPar()}if(v==="coran")renderRev()};
-head();renderGrid();renderDetail();renderLire();renderGameSeg();newGame();renderSurahs();renderSurah();renderRev();renderTaj();renderIsl();
+  if(v==="parents"){confirmReset=false;renderPar()}if(v==="coran")renderRev();if(v==="darija")renderDar()};
+head();renderGrid();renderDetail();renderLire();renderGameSeg();newGame();renderSurahs();renderSurah();renderRev();renderTaj();renderIsl();renderDar();
 addEventListener("hashchange",route);route();
 }
 </script>
+<script>if("serviceWorker" in navigator){addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})})}</script>
 </body>
 </html>
