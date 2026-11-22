@@ -193,6 +193,22 @@ html.gift .welcome{background:linear-gradient(#fff,#fff) padding-box,linear-grad
 .code span{background:#f3e8ff;border-radius:12px;padding:4px 12px;font-weight:700}
 html.gift .hcard.dar{background:linear-gradient(135deg,#ff6fa8,#ffb86b);color:#fff;box-shadow:0 5px 0 #c23b74}
 html.gift .hcard.dar .ar,html.gift .hcard.dar span:last-child{color:#fff}
+/* ===== compagnon, bases, jeux ===== */
+.homeh{margin:22px 0 10px;font-size:22px}
+.chat{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.bub{max-width:min(560px,88%);border-radius:22px;padding:12px 16px;background:#fff;box-shadow:0 3px 0 var(--line)}
+.bub.me{align-self:flex-end;background:var(--lapis);color:#fff}
+.bub .bl{font-size:21px;font-weight:800;line-height:1.25}
+.bub .ba{font-family:"Noto Naskh Arabic",serif;font-size:20px;direction:rtl;text-align:right;opacity:.85}
+.bub .bf{font-size:15px;color:var(--mute);margin-top:4px}
+.bub .bt{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.bub .bt button{min-height:40px;padding:2px 12px;font-size:15px}
+.who{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.avatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:36px;background:linear-gradient(135deg,#ffd43b,#ff922b);box-shadow:0 3px 0 rgba(0,0,0,.12)}
+.choices{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));margin:6px 0 20px}
+.choices button{min-height:56px;justify-content:flex-start;text-align:start}
+.order-steps{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.lesson p{margin:6px 0}
+
 .note{font-size:14px;color:var(--mute);margin-top:14px}
 @media(max-width:700px){.detail{grid-template-columns:minmax(0,1fr)}nav a{font-size:15px;padding:10px 12px}.memo{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -213,15 +229,26 @@ html.gift .hcard.dar .ar,html.gift .hcard.dar span:last-child{color:#fff}
   <section id="v-accueil">
     <h2 id="hello">Assalâmou ʿalaykoum !</h2>
     <p class="lead">Que veux-tu faire aujourd'hui ? Touche une grande carte.</p>
+    <h3 class="homeh">🇲🇦 Darija de Casablanca</h3>
+    <div class="home">
+      <a class="btn hcard dar" href="#ami"><span class="ar">🌸</span><b>Parler avec Nour</b><span>Ton amie qui parle darija</span></a>
+      <a class="btn hcard" href="#darija"><span class="ar">الدارجة</span><b>Les mots de darija</b><span>Parler comme à Casa</span></a>
+    </div>
+    <h3 class="homeh">🌙 Islam</h3>
     <div class="home">
       <a class="btn hcard coran" href="#coran"><span class="ar">القُرْآن</span><b>J'apprends le Coran</b><span>Écouter, répéter, réciter par cœur</span></a>
-      <a class="btn hcard dar" href="#darija"><span class="ar">الدارجة</span><b>Darija de Casablanca 🇲🇦</b><span>Parler comme à Casa</span></a>
-      <a class="btn hcard" href="#islam"><span class="ar">دُعَاء</span><b>Douas et prière</b><span>Invocations, ablutions, 99 noms, prophètes</span></a>
+      <a class="btn hcard" href="#islam"><span class="ar">الإِسْلَام</span><b>Islam et douas</b><span>Piliers, Ramadan, Aïd, prière, invocations</span></a>
+      <a class="btn hcard" href="#tajwid"><span class="ar">تَجْوِيد</span><b>Le tajwid</b><span>Les règles pour bien réciter</span></a>
+    </div>
+    <h3 class="homeh">📖 Arabe</h3>
+    <div class="home">
       <a class="btn hcard" href="#lettres"><span class="ar">ا ب ت</span><b>Les lettres</b><span>Écouter les 28 lettres</span></a>
       <a class="btn hcard" href="#ecrire"><span class="ar">✍</span><b>J'écris</b><span>Tracer les lettres avec le doigt</span></a>
-      <a class="btn hcard" href="#jouer"><span class="ar">★</span><b>Je joue</b><span>Gagner des étoiles</span></a>
       <a class="btn hcard" href="#lire"><span class="ar">بَا بِي بُو</span><b>Je lis</b><span>Les voyelles, pas à pas</span></a>
-      <a class="btn hcard" href="#tajwid"><span class="ar">تَجْوِيد</span><b>Le tajwid</b><span>Les règles pour bien réciter</span></a>
+    </div>
+    <h3 class="homeh">🎮 Jeux</h3>
+    <div class="home">
+      <a class="btn hcard" href="#jouer"><span class="ar">⚡</span><b>Tous les jeux</b><span>Souk, piliers, ablutions, quiz…</span></a>
     </div>
     <details class="help" open><summary>Comment ça marche ? (à lire une fois)</summary><ol>
       <li><b>Pas besoin de savoir lire l'arabe.</b> Sous chaque verset, il y a la prononciation en lettres de chez nous et le sens en français.</li>
@@ -281,6 +308,7 @@ html.gift .hcard.dar .ar,html.gift .hcard.dar span:last-child{color:#fff}
     <p class="note">Le texte est affiché avec ses voyelles. Pour la prononciation exacte (tajwid), écoute toujours un récitateur et fais-toi corriger par un adulte ou un enseignant.</p>
   </section>
 
+  <section id="v-ami"><div id="amiBox"></div></section>
   <section id="v-darija"><div id="darBox"></div></section>
   <section id="v-islam"><div id="islBox"></div></section>
   <section id="v-tajwid"><div id="tajBox"></div></section>
@@ -288,7 +316,7 @@ html.gift .hcard.dar .ar,html.gift .hcard.dar span:last-child{color:#fff}
 </main>
 <div class="overlay" id="wel" role="dialog" aria-modal="true" aria-labelledby="welT"><div class="welcome">
   <div class="gift-ico">🎁</div><h2 id="welT">Un cadeau pour toi, Samia !</h2>
-  <p>Maman a préparé cette appli rien que pour toi, pour apprendre l'arabe et le Coran, avec des enfants qui récitent avec toi. Plein d'étoiles à gagner ★</p>
+  <p>Maman a préparé cette appli rien que pour toi, pour apprendre l'arabe, l'islam et la darija de Casablanca avec ton amie Nour. Plein d'étoiles à gagner ★</p>
   <button class="pri" id="welGo" style="width:100%;font-size:20px;min-height:60px">🎀 Ouvrir mon cadeau</button></div></div>
 <div class="overlay" id="ov" role="dialog" aria-modal="true"><div class="diploma" id="dip"></div></div>
 
@@ -499,7 +527,7 @@ const lockCard=what=>`<div class="card lock"><h3>🔒 ${what} — dans la Versio
 <p class="note">Demande à tes parents.</p></div>`;
 
 /* ================= NAVIGATION ================= */
-const TABS=[["accueil","Accueil"],["lettres","Lettres"],["lire","Lire"],["ecrire","Écrire"],["jouer","Jouer"],["coran","Coran"],["darija","Darija 🇲🇦"],["islam","Douas & prière"],["tajwid","Tajwid"],["parents","Parents"]];
+const TABS=[["accueil","Accueil"],["ami","Nour"],["darija","Darija 🇲🇦"],["coran","Coran"],["islam","Islam"],["lettres","Lettres"],["ecrire","Écrire"],["lire","Lire"],["tajwid","Tajwid"],["jouer","Jeux"],["parents","Parents"]];
 const HIDE=GIFT&&!PREMIUM?["lire","tajwid","parents"]:[];
 $("nav").innerHTML=TABS.filter(t=>!HIDE.includes(t[0])).map(t=>`<a href="#${t[0]}">${t[1]}${!PREMIUM&&["lire","tajwid","parents"].includes(t[0])?" 🔒":""}</a>`).join("");
 $("edition").textContent=PREMIUM?"Famille":"Gratuit";if(GIFT)$("edition").remove();
@@ -567,11 +595,11 @@ $("trCheck").onclick=()=>{const g=ghost.getContext("2d").getImageData(0,0,ghost.
 const trRO=new ResizeObserver(()=>{if(cv.clientWidth&&cv.clientWidth!==W)setupCanvas()});trRO.observe(cv);
 
 /* ================= JEUX ================= */
-const GAMES=[["quiz","Le quiz des lettres"],["debut","Le mot mystère"],["memo","Le jeu de mémoire"]];
+const GAMES=[["quiz","Le quiz des lettres"],["debut","Le mot mystère"],["memo","Le jeu de mémoire"],["souk","🛒 Le souk"],["pil","🕌 Les 5 piliers"],["wudu","💧 Ablutions"],["dua","🤲 Invocations"]];
 let gm="quiz",qn=0,score=0,q=null,mem=null;
-const renderGameSeg=()=>{$("gameSeg").innerHTML=GAMES.filter((g,i)=>!(GIFT&&!PREMIUM&&i)).map((g,i)=>`<button aria-pressed="${g[0]===gm}" data-g="${g[0]}">${g[1]}${!PREMIUM&&i?" 🔒":""}</button>`).join("")};
+const renderGameSeg=()=>{$("gameSeg").innerHTML=GAMES.map((g,i)=>`<button aria-pressed="${g[0]===gm}" data-g="${g[0]}">${g[1]}</button>`).join("")};
 $("gameSeg").addEventListener("click",e=>{const b=e.target.closest("[data-g]");if(!b)return;gm=b.dataset.g;qn=0;score=0;renderGameSeg();newGame()});
-const newGame=()=>{if(!PREMIUM&&gm!=="quiz"){$("game").outerHTML=`<div class="card quiz" id="game">${lockCard("Ce jeu")}</div>`;return}
+const newGame=()=>{if(G2[gm]){if(typeof ch!=="undefined"&&ch&&ch.iv)clearInterval(ch.iv);g2=null;return G2[gm]()}g2=null;if(false){$("game").outerHTML=`<div class="card quiz" id="game">${lockCard("Ce jeu")}</div>`;return}
   if(gm==="memo")return newMemo();
   if(qn>=10){if(score>P.quizBest){P.quizBest=score;save()}
     $("game").innerHTML=`<div class="ask">Fini ! <b>${score}</b> sur 10 ★</div><p>${score>=8?"Champion·ne !":score>=5?"Très bien, continue !":"Revois les lettres et réessaie."}</p><button class="pri" id="again">Rejouer</button>`;return}
@@ -790,14 +818,15 @@ const PROPHETS=[
 ["ʿÎsâ","عِيسَىٰ","ʿÎsâ est né de Maryam sans père, par un miracle d'Allah. Bébé, il a parlé dans son berceau. Avec la permission d'Allah, il guérissait les malades. C'est un grand prophète et un serviteur d'Allah.","Les miracles viennent d'Allah."],
 ["Muḥammad ﷺ","مُحَمَّد ﷺ","Né à La Mecque, orphelin très jeune, tout le monde l'appelait Al-Amîn, « le digne de confiance ». À 40 ans, dans la grotte de Ḥirâʾ, l'ange Jibrîl lui a apporté le premier verset : اقْرَأْ (Iqraʾ, « Lis ! »). C'est le dernier prophète.","Être honnête et digne de confiance."]];
 const P25="Âdam · Idrîs · Noûḥ · Hoûd · Ṣâliḥ · Ibrâhîm · Loûṭ · Ismâʿîl · Isḥâq · Yaʿqoûb · Yoûsouf · Ayyoûb · Chouʿayb · Moûsâ · Hâroûn · Dhoû l-Kifl · Dâwoûd · Soulaymân · Ilyâs · Al-Yasaʿ · Yoûnous · Zakariyyâ · Yaḥyâ · ʿÎsâ · Muḥammad ﷺ";
-const ISL=[["douas","Douas"],["wudu","Ablutions"],["priere","La prière"],["noms","Les 99 noms"],["prophetes","Les prophètes"]];
-const islFree=k=>PREMIUM||["douas","wudu","priere"].includes(k);
-let isl="douas",wStep=0,nq=null;
+const ISL=[["bases","Bases de l'islam"],["douas","Douas"],["wudu","Ablutions"],["priere","La prière"],["noms","Les 99 noms"],["prophetes","Les prophètes"]];
+const islFree=k=>PREMIUM||["bases","douas","wudu","priere"].includes(k);
+let isl="bases",wStep=0,nq=null;
 const ok1=(key,i)=>(P[key]||[]).includes(i);
 const toggle1=(key,i)=>{P[key]=P[key]||[];if(P[key].includes(i))P[key]=P[key].filter(x=>x!==i);else{P[key].push(i);addStar()}save()};
 const renderIsl=()=>{let b="";
   const tabs=`<div class="seg">${ISL.filter(t=>!(GIFT&&!islFree(t[0]))).map(t=>`<button aria-pressed="${t[0]===isl}" data-isl="${t[0]}">${t[1]}${islFree(t[0])?"":" 🔒"}</button>`).join("")}</div>`;
   if(!islFree(isl))b=lockCard(ISL.find(t=>t[0]===isl)[1]);
+  else if(isl==="bases")b=basesHTML();
   else if(isl==="douas")b=`<p class="lead">Touche ▶ pour écouter, répète, puis touche « Je la connais » pour gagner une étoile.</p>
     <details class="help"><summary>🎙 Mettre ta propre voix (ou celle de maman)</summary><ol>
     <li>Sur l'iPhone, ouvre l'app <b>Dictaphone</b> et enregistre une seule doua.</li>
@@ -826,12 +855,15 @@ const renderIsl=()=>{let b="";
     <p class="note">Cette liste est celle rapportée par At-Tirmidhî, la plus connue ; les savants ont aussi cité d'autres listes.</p>`}
   else b=`<p class="lead">Le Coran cite 25 prophètes. Voici l'histoire de 8 d'entre eux, racontée simplement.</p>`+PROPHETS.map(p=>`<div class="card"><h3>${p[0]} <span class="ar">${p[1]}</span></h3><p>${p[2]}</p><p><b>Leçon :</b> ${p[3]}</p></div>`).join("")+
     `<div class="card"><h3>Les 25 prophètes cités dans le Coran</h3><p>${P25}</p></div>`;
-  $("islBox").innerHTML=`<h2>Douas, prière et Islam</h2>${tabs}${b}`;if(isl==="noms"&&PREMIUM)nQ()};
+  $("islBox").innerHTML=`<h2>Islam</h2>${tabs}${b}`;if(isl==="bases"&&bI>=0)bQ(true);if(isl==="noms"&&PREMIUM)nQ()};
 const nQ=()=>{if(!$("nquiz"))return;const a=Math.floor(Math.random()*NAMES.length),o=shuffle([a,...shuffle(NAMES.map((_,i)=>i).filter(i=>i!==a)).slice(0,2)]);nq={a};
   $("nquiz").innerHTML=`<div class="ask">Que veut dire ce nom ?<span class="ar" style="font-size:clamp(44px,10vw,70px)">${NAMES[a][0]}</span>${NAMES[a][1]}</div>
   <div class="opts" style="grid-template-columns:minmax(0,1fr)">${o.map(i=>`<button data-no="${i}">${NAMES[i][2]}</button>`).join("")}</div>`};
 $("islBox").addEventListener("click",e=>{const t=e.target,id=t.closest("button")?.id;
-  const s=t.closest("[data-isl]");if(s){stopAudio();isl=s.dataset.isl;renderIsl();return}
+  const s=t.closest("[data-isl]");if(s){stopAudio();isl=s.dataset.isl;bI=-1;renderIsl();return}
+  const bi=t.closest("[data-bi]");if(bi){bI=+bi.dataset.bi;renderIsl();window.scrollTo(0,0);return}
+  if(t.closest("[data-bagain]")){bQ(true);return}
+  const bo=t.closest("[data-bo]");if(bo&&!bq.done){bq.done=1;const q=BASES[bI].q[bq.n],ok=+bo.dataset.bo===q[2];bo.classList.add(ok?"right":"wrong");if(ok)bq.sc++;else $("bquiz").querySelector(`[data-bo="${q[2]}"]`).classList.add("right");bq.n++;setTimeout(()=>bQ(false),ok?900:1800);return}
   const a=t.closest("[data-aud]");if(a){if(playing)stopAudio();else playList([{src:a.dataset.aud,k:-1}],x=>{playing=!!x;a.textContent=x?"⏸ Arrêter":"▶ Écouter"});return}
   const av=t.closest("[data-addv]");if(av){voiceFor=+av.dataset.addv;voiceIn.click();return}
   const mv=t.closest("[data-myv]");if(mv){vStore("readonly",st=>st.get(+mv.dataset.myv)).then(b=>{if(b)playList([{src:URL.createObjectURL(b),k:-1}],x=>{playing=!!x})});return}
@@ -876,6 +908,79 @@ $("darBox").addEventListener("click",e=>{const t=e.target;
     if(!ok)$("dquiz").querySelector(`[data-do="${dq.a}"]`).classList.add("right");else{dq.sc++;addStar(1)}
     playList([{src:dfn(dT,dq.a),k:-1}]);dq.n++;setTimeout(()=>dQ(false),ok?1100:1900)}});
 
+/* ================= COMPAGNON ================= */
+const COMP="Nour",COMPAR="\u0646\u0648\u0631",FEM=true,KIDN="Samia";
+const AL={"greet": ["Salam Samia ! Kidayra lyoum ?", "سلام سامية! كيدايرة اليوم؟", "Salut Samia ! Comment tu vas aujourd'hui ?"], "ok": ["Labas, l7amdoulillah !", "لاباس، الحمد لله!", "Ça va, grâce à Dieu !"], "okC": ["L7amdoulillah ! Ana fer7ana bik.", "الحمد لله! أنا فرحانة بيك.", "Grâce à Dieu ! Je suis contente de te voir."], "tired": ["Chwiya 3iyana", "شوية عيانة", "Un peu fatiguée"], "tiredC": ["Ma3lich, ghadi nt3ellmou b chwiya.", "معليش، غادي نتعلمو بشوية.", "Pas grave, on va apprendre doucement."], "menu": ["Yallah Samia, chnou bghiti nt3ellmou lyoum ?", "يالاه سامية، شنو بغيتي نتعلمو اليوم؟", "Allez Samia, qu'est-ce que tu veux qu'on apprenne aujourd'hui ?"], "quizQ": ["Chnou ma3na had lkelma ?", "شنو معنى هاد الكلمة؟", "Que veut dire ce mot ?"], "bravo": ["Bravo a Samia ! Tbarkellah 3lik !", "برافو أ سامية! تبارك الله عليك!", "Bravo Samia ! Bien joué !"], "oops": ["Machi mochkil, 3awed m3aya.", "ماشي مشكل، عاود معايا.", "Pas de problème, répète avec moi."], "wakha": ["Wakha ! Yallah !", "واخا! يالاه!", "D'accord ! On y va !"], "ask": ["Sowlni, ana hna !", "سولني، أنا هنا!", "Pose-moi ta question, je suis là !"], "bye": ["Bslama a Samia, ntla9aw ghedda !", "بسلامة أ سامية، نتلاقاو غدا!", "Au revoir Samia, à demain !"]},FAQ=[["Comment on dit « je t'aime maman » ?", "Kanbghik a mama", "كنبغيك أ ماما", "Je t'aime maman"], ["Comment on dit « tu me manques » ?", "Twe7chtek", "توحشتك", "Tu me manques"], ["Comment on dit « bravo » ?", "Tbarkellah 3lik", "تبارك الله عليك", "Bravo / Bien joué"], ["Comment on dit « à demain » ?", "Ntla9aw ghedda", "نتلاقاو غدا", "On se voit demain"], ["Comment on dit « j'ai soif » ?", "Ana 3tchana", "أنا عطشانة", "J'ai soif (fille)"], ["Comment on dit « c'est trop bon » ?", "Bnin bezzaf", "بنين بزاف", "C'est très bon"], ["Comment on dit « viens ! » ?", "Aji !", "أجي!", "Viens !"], ["Comment on dit « je n'ai pas compris » ?", "Ma fhemtch", "ما فهمتش", "Je n'ai pas compris"]];
+const aa=k=>"audio/ami/"+k+".mp3";
+let amiStarted=false,aq=null;
+const renderAmiShell=()=>{$("amiBox").innerHTML=`<div class="who"><div class="avatar">${FEM?"🌸":"😎"}</div><div><h2 style="margin:0">${COMP} <span class="ar" style="font-size:.7em">${COMPAR}</span></h2>
+  <div class="note" style="margin:0">${FEM?"Ton amie":"Ton ami"} de Casablanca qui t'apprend la darija.</div></div></div>
+  <p class="note">${COMP} parle avec des dialogues préparés à l'avance : ce n'est pas une intelligence artificielle libre. Sa voix est une voix de synthèse marocaine, pas une vraie personne.</p>
+  <div class="chat" id="chat"></div><div class="choices" id="choices"></div>`};
+const say2=(k,txt,me)=>{const c=$("chat");if(!c)return;const d=document.createElement("div");d.className="bub"+(me?" me":"");
+  if(me){d.innerHTML=`<div class="bl">${txt[0]}</div>${txt[1]?`<div class="bf" style="color:#e8f4ff">${txt[1]}</div>`:""}`}
+  else{const src=k.startsWith("audio/")?k:aa(k);d.innerHTML=`<div class="bl">${txt[0]}</div><div class="ba">${txt[1]}</div><div class="bf" hidden>${txt[2]}</div>
+  <div class="bt"><button data-rep="${src}">🔊 Répéter</button><button data-slow="${src}">🐢 Lentement</button><button data-tr>🇫🇷 Traduire</button></div>`;playList([{src,k:-1}])}
+  c.appendChild(d);d.scrollIntoView({behavior:"smooth",block:"end"})};
+const choose=opts=>{$("choices").innerHTML=opts.map((o,i)=>`<button data-ch="${i}">${o[0]}</button>`).join("");aq=opts};
+const amiStart=()=>{amiStarted=true;renderAmiShell();say2("greet",AL.greet);
+  choose([[AL.ok[0]+" 🙂",()=>{say2("",[AL.ok[0],AL.ok[2]],1);setTimeout(()=>{say2("okC",AL.okC);setTimeout(amiMenu,1600)},500)}],
+          [AL.tired[0]+" 😴",()=>{say2("",[AL.tired[0],AL.tired[2]],1);setTimeout(()=>{say2("tiredC",AL.tiredC);setTimeout(amiMenu,1600)},500)}]])};
+const amiMenu=()=>{say2("menu",AL.menu);
+  choose([["🇲🇦 Des mots de darija",()=>{say2("",["Des mots de darija !"],1);amiQuiz(0)}],
+          ["❓ Je pose une question",()=>{say2("",["J'ai une question !"],1);say2("ask",AL.ask);amiFaq()}],
+          ["📖 Les lettres arabes",()=>{say2("wakha",AL.wakha);setTimeout(()=>location.hash="lettres",1400)}],
+          ["🌙 Le Coran",()=>{say2("wakha",AL.wakha);setTimeout(()=>location.hash="coran",1400)}],
+          ["👋 Bslama !",()=>{say2("",["Bslama !"],1);say2("bye",AL.bye);choose([["🔄 Recommencer",amiStart]])}]])};
+const amiQuiz=n=>{if(n>=3){setTimeout(amiMenu,900);return}
+  const t=Math.floor(Math.random()*DAR.length),W=DAR[t].w,a=Math.floor(Math.random()*W.length),o=shuffle([a,...shuffle(W.map((_,i)=>i).filter(i=>i!==a)).slice(0,2)]);
+  say2("quizQ",AL.quizQ);setTimeout(()=>{say2(dfn(t,a),[W[a][0],W[a][1],W[a][2]])},1500);
+  choose(o.map(i=>[W[i][2],()=>{say2("",[W[i][2]],1);if(i===a){addStar(1);say2("bravo",AL.bravo)}else{say2("oops",AL.oops);setTimeout(()=>say2(dfn(t,a),[W[a][0],W[a][1],W[a][2]]),1400)}setTimeout(()=>amiQuiz(n+1),2600)}]))};
+const amiFaq=()=>{choose(FAQ.map((f,i)=>[f[0],()=>{say2("",[f[0]],1);say2("faq"+i,[f[1],f[2],f[3]]);addStar(1);
+  choose([["❓ Une autre question",amiFaq],["⬅️ Retour",amiMenu]])}]).concat([["⬅️ Retour",amiMenu]]))};
+$("amiBox").addEventListener("click",e=>{const t=e.target;
+  const c=t.closest("[data-ch]");if(c&&aq){const f=aq[+c.dataset.ch][1];$("choices").innerHTML="";f();return}
+  const r=t.closest("[data-rep]");if(r){qOpt.slow=false;playList([{src:r.dataset.rep,k:-1}]);return}
+  const sl=t.closest("[data-slow]");if(sl){qOpt.slow=true;playList([{src:sl.dataset.slow,k:-1}],x=>{if(!x)qOpt.slow=false});return}
+  const tr=t.closest("[data-tr]");if(tr){const f=tr.closest(".bub").querySelector(".bf");f.hidden=!f.hidden}});
+
+/* ================= BASES DE L'ISLAM ================= */
+const BASES=[{"t": "Les 5 piliers de l'islam", "ico": "🕌", "p": ["L'islam est comme une maison posée sur 5 piliers. Ce sont les 5 choses principales que fait un musulman :", "1. <b>La chahada</b> : dire avec le cœur et la bouche qu'il n'y a de dieu qu'Allah et que Muhammad ﷺ est Son messager.", "2. <b>La prière (salât)</b> : prier 5 fois par jour.", "3. <b>L'aumône (zakât)</b> : donner chaque année une partie de ses biens aux pauvres, quand on en a assez.", "4. <b>Le jeûne du Ramadan (sawm)</b> : ne pas manger ni boire de l'aube au coucher du soleil pendant le mois de Ramadan.", "5. <b>Le pèlerinage (hajj)</b> : aller à La Mecque une fois dans sa vie, si on en a la santé et les moyens."], "src": "Source : le hadith « L'islam est bâti sur cinq » (rapporté par Al-Bukhârî et Muslim).", "q": [["Combien y a-t-il de piliers de l'islam ?", ["5", "3", "10"], 0], ["Combien de fois par jour le musulman prie-t-il ?", ["5 fois", "2 fois", "1 fois"], 0], ["Pendant quel mois jeûne-t-on ?", ["Le Ramadan", "Le mois de l'Aïd", "Tous les mois"], 0], ["Où va-t-on pour le hajj ?", ["À La Mecque", "À Casablanca", "À Médine seulement"], 0]]}, {"t": "Les 6 piliers de la foi", "ico": "💛", "p": ["La foi (al-îmân), c'est ce que le musulman croit dans son cœur. Elle a 6 piliers :", "1. Croire en <b>Allah</b>, l'Unique.", "2. Croire en Ses <b>anges</b>.", "3. Croire en Ses <b>livres</b> (comme le Coran).", "4. Croire en Ses <b>messagers</b> (les prophètes).", "5. Croire au <b>Jour dernier</b>.", "6. Croire au <b>destin</b>, le bien comme le mal."], "src": "Source : le hadith de l'ange Jibrîl (rapporté par Muslim).", "q": [["Combien y a-t-il de piliers de la foi ?", ["6", "5", "4"], 0], ["Lequel est un pilier de la foi ?", ["Croire aux anges", "Manger des dattes", "Aller à l'école"], 0], ["Le Coran est…", ["Un des livres d'Allah", "Une histoire inventée", "Un jeu"], 0]]}, {"t": "Le Ramadan", "ico": "🌙", "p": ["Le Ramadan est le 9e mois du calendrier musulman. C'est le mois où le Coran a commencé à être révélé (Coran, sourate 2, verset 185).", "Les adultes jeûnent : ils ne mangent pas et ne boivent pas de l'aube (le fajr) jusqu'au coucher du soleil (le maghrib).", "Le soir, on rompt le jeûne : c'est le <b>ftour</b> (l'iftar), souvent avec des dattes, de l'eau et une bonne harira au Maroc.", "C'est un mois de prière, de Coran, de patience et de générosité envers les autres.", "Les enfants ne sont pas obligés de jeûner. Ils peuvent s'entraîner un peu, quand ils grandissent et si leurs parents sont d'accord."], "src": "Source : Coran, sourate Al-Baqara (2), versets 183 à 185.", "q": [["Quand rompt-on le jeûne ?", ["Au coucher du soleil", "À midi", "Le matin"], 0], ["Qu'a-t-on commencé à recevoir pendant le Ramadan ?", ["Le Coran", "Les cadeaux de l'Aïd", "Les vacances"], 0], ["Le repas pour rompre le jeûne s'appelle…", ["Le ftour (iftar)", "Le goûter", "Le petit-déjeuner"], 0]]}, {"t": "L'Aïd al-Fitr", "ico": "🎉", "p": ["L'Aïd al-Fitr est la fête de la fin du Ramadan. Au Maroc, on l'appelle souvent <b>l'Aïd sghir</b> (la petite fête).", "Le matin, on fait la prière de l'Aïd. Avant la prière, on donne la <b>zakât al-fitr</b> : de la nourriture ou de l'argent pour les pauvres, afin que tout le monde puisse faire la fête.", "On met de beaux habits, on rend visite à la famille, on se dit « Mabrouk l3id ! » et on partage des gâteaux."], "src": "La zakât al-fitr est rapportée par Al-Bukhârî et Muslim (hadith d'Ibn ʿUmar).", "q": [["L'Aïd al-Fitr fête…", ["La fin du Ramadan", "Le début de l'année", "Le pèlerinage"], 0], ["Avant la prière de l'Aïd, on donne…", ["La zakât al-fitr", "Un bonbon", "Rien"], 0]]}, {"t": "L'Aïd al-Adha", "ico": "🐑", "p": ["L'Aïd al-Adha est la fête du sacrifice. Au Maroc, on l'appelle <b>l'Aïd lkbir</b> (la grande fête).", "Elle rappelle l'histoire du prophète Ibrâhîm, qui a obéi à Allah ; Allah a remplacé son fils par un bélier.", "Les familles qui le peuvent sacrifient un mouton et partagent la viande avec la famille, les voisins et les pauvres.", "Elle a lieu pendant la période du hajj, le 10e jour du mois de dhoul-hijja."], "src": "Source : Coran, sourate As-Sâffât (37), versets 102 à 107.", "q": [["Au Maroc, l'Aïd al-Adha s'appelle aussi…", ["L'Aïd lkbir", "L'Aïd sghir", "Le Ramadan"], 0], ["Elle rappelle l'histoire de quel prophète ?", ["Ibrâhîm", "Yoûnous", "Noûḥ"], 0], ["Avec qui partage-t-on la viande ?", ["Famille, voisins et pauvres", "Personne", "Seulement les amis"], 0]]}, {"t": "Les belles valeurs", "ico": "🌟", "p": ["<b>L'honnêteté</b> : dire la vérité, même quand c'est difficile.", "<b>La patience (sabr)</b> : rester calme quand quelque chose est dur, et continuer à faire de son mieux.", "<b>La gratitude (choukr)</b> : dire « Al-ḥamdou lillâh » et remercier Allah et les gens pour ce qu'on reçoit.", "<b>La générosité</b> : partager avec les autres, même un sourire.", "<b>Le respect des parents</b> : le Coran demande d'être bon avec ses parents et de leur parler avec douceur (sourate 17, versets 23 et 24)."], "src": "Source pour les parents : Coran, sourate Al-Isrâʾ (17), versets 23-24.", "q": [["Être patient, c'est…", ["Rester calme et continuer", "Crier", "Abandonner"], 0], ["Pour remercier Allah, on dit…", ["Al-ḥamdou lillâh", "Bslama", "Yallah"], 0], ["Le Coran demande d'être… avec ses parents.", ["Bon et doux", "Impoli", "Indifférent"], 0]]}];let bI=-1,bq=null;
+const basesHTML=()=>{if(bI<0)return `<p class="lead">Choisis une leçon. Chaque leçon se termine par un petit quiz.</p><div class="themes">${BASES.map((b,i)=>`<button data-bi="${i}"><span class="ti">${b.ico}</span><b>${b.t}</b><small>${(P.bases||{})[i]?"✅ réussi":b.q.length+" questions"}</small></button>`).join("")}</div>`;
+  const b=BASES[bI];return `<div class="row" style="margin-bottom:10px"><button data-bi="-1">← Toutes les leçons</button></div><div class="card lesson"><h3>${b.ico} ${b.t}</h3>${b.p.map(x=>`<p>${x}</p>`).join("")}<p class="note">${b.src}</p></div><div class="card quiz" id="bquiz"></div>`};
+const bQ=reset=>{const el=$("bquiz");if(!el)return;if(reset)bq={n:0,sc:0};const b=BASES[bI];
+  if(bq.n>=b.q.length){const ok=bq.sc===b.q.length;if(ok){P.bases=Object.assign(P.bases||{},{[bI]:1});save();addStar(3)}
+    el.innerHTML=`<div class="ask">${ok?"🏅 Parfait, leçon réussie !":"Score : "+bq.sc+" / "+b.q.length}</div><button class="pri" data-bagain>Refaire le quiz</button>`;return}
+  const q=b.q[bq.n],ord=shuffle(q[1].map((_,i)=>i));bq.done=0;
+  el.innerHTML=`<p style="margin:0">Question ${bq.n+1} / ${b.q.length}</p><div class="ask">${q[0]}</div><div class="opts" style="grid-template-columns:minmax(0,1fr)">${ord.map(i=>`<button data-bo="${i}">${q[1][i]}</button>`).join("")}</div>`};
+
+/* ================= NOUVEAUX JEUX ================= */
+const PIL=[["La chahada", "Dire qu'il n'y a de dieu qu'Allah et que Muhammad ﷺ est Son messager."], ["La prière (salât)", "Prier 5 fois par jour."], ["L'aumône (zakât)", "Donner une partie de ses biens aux pauvres."], ["Le jeûne (sawm)", "Ne pas manger ni boire de l'aube au coucher du soleil pendant le Ramadan."], ["Le pèlerinage (hajj)", "Aller à La Mecque une fois dans sa vie, si on le peut."]];const SOUK=[{"v": ["Mer7ba bik ! Chnou bghiti ?", "مرحبا بيك! شنو بغيتي؟", "Bienvenue ! Qu'est-ce que tu veux ?"], "o": [["Bghit kilo dial lbanan, 3afak.", "Je veux un kilo de bananes, s'il te plaît."], ["Bslama !", "Au revoir !"], ["Ana 3tchan.", "J'ai soif."]], "ok": 0}, {"v": ["Wakha. Chi 7aja khra ?", "واخا. شي حاجة خرى؟", "D'accord. Autre chose ?"], "o": [["Sba7 lkhir !", "Bonjour (le matin) !"], ["La, chokran. Ch7al ?", "Non, merci. Combien ?"], ["Smiti...", "Je m'appelle..."]], "ok": 1}, {"v": ["3echrin dirham.", "عشرين درهم.", "Vingt dirhams."], "o": [["Hak, tfeddel.", "Tiens, voilà."], ["Mafhemtch.", "Je n'ai pas compris."], ["Bzzaf !", "Beaucoup !"]], "ok": 0}, {"v": ["Bsse7tek ! Bslama.", "بصحتك! بسلامة.", "Bonne utilisation ! Au revoir."], "o": [["Chokran, bslama !", "Merci, au revoir !"], ["Fin ?", "Où ?"], ["La.", "Non."]], "ok": 0}];let g2=null;
+const gPil=()=>{if(!g2||g2.k!=="pil")g2={k:"pil",n:0,sc:0,ord:shuffle([0,1,2,3,4])};
+  if(g2.n>=5){$("game").innerHTML=`<div class="ask">🕌 ${g2.sc} / 5</div><p>${g2.sc===5?"Bravo, tu connais les 5 piliers !":"Relis la leçon « Les 5 piliers » dans l'onglet Islam."}</p><button class="pri" data-g2again>Rejouer</button>`;return}
+  const a=g2.ord[g2.n];g2.a=a;g2.done=0;$("game").innerHTML=`<p>Pilier ${g2.n+1} / 5</p><div class="ask" style="font-size:22px">${PIL[a][1]}</div><div class="opts" style="grid-template-columns:minmax(0,1fr)">${shuffle([0,1,2,3,4]).map(i=>`<button data-p2="${i}">${PIL[i][0]}</button>`).join("")}</div>`};
+const gWudu=()=>{if(!g2||g2.k!=="wudu")g2={k:"wudu",step:0,err:0,ord:shuffle(WUDU.map((_,i)=>i))};
+  const done=g2.step>=WUDU.length;$("game").innerHTML=`<div class="ask" style="font-size:22px">💧 Remets les ablutions dans l'ordre</div><p>Touche les étapes de la première à la dernière. ${done?"":"Étape à trouver : <b>"+(g2.step+1)+"</b>"}</p>
+  <ol>${WUDU.slice(0,g2.step).map(w=>`<li>✅ ${w[0]}</li>`).join("")}</ol>
+  ${done?`<div class="msg ok">Bravo ! Tes ablutions sont dans le bon ordre${g2.err?" ("+g2.err+" erreur"+(g2.err>1?"s":"")+")":" sans erreur"} !</div><button class="pri" data-g2again>Rejouer</button>`:`<div class="order-steps">${g2.ord.filter(i=>i>=g2.step).map(i=>`<button data-w2="${i}">${WUDU[i][0]}</button>`).join("")}</div><div class="msg" id="w2m"></div>`}`};
+const DUAG=[0,2,3,4,5,6,7,8,10,11];
+const gDua=()=>{if(!g2||g2.k!=="dua")g2={k:"dua",n:0,sc:0};if(g2.n>=6){$("game").innerHTML=`<div class="ask">🤲 ${g2.sc} / 6</div><button class="pri" data-g2again>Rejouer</button>`;return}
+  const a=pick(DUAG);g2.a=a;g2.done=0;const o=shuffle([a,...shuffle(DUAG.filter(i=>i!==a)).slice(0,2)]);
+  $("game").innerHTML=`<p>Question ${g2.n+1} / 6</p><div class="ask" style="font-size:22px">Que dit-on : <b>${DUAS[a][0].toLowerCase()}</b> ?</div><div class="opts" style="grid-template-columns:minmax(0,1fr)">${o.map(i=>`<button data-d2="${i}"><span class="ar" style="font-size:22px">${DUAS[i][2]}</span><br><small>${DUAS[i][3]}</small></button>`).join("")}</div>`};
+const gSouk=()=>{if(!g2||g2.k!=="souk")g2={k:"souk",n:0,err:0};
+  if(g2.n>=SOUK.length){$("game").innerHTML=`<div class="ask">🛒 Bravo, tu as fait tes courses en darija !</div><p>${g2.err?g2.err+" erreur(s) : rejoue pour faire un sans-faute.":"Sans aucune erreur, tbarkellah !"}</p><button class="pri" data-g2again>Rejouer</button>`;return}
+  const st=SOUK[g2.n];g2.done=0;playList([{src:"audio/souk/"+g2.n+".mp3",k:-1}]);
+  $("game").innerHTML=`<div class="ask" style="font-size:22px">🧔 Le marchand du souk :</div><div class="card" style="text-align:start"><div class="bl" style="font-size:22px;font-weight:800">${st.v[0]}</div><div class="ar" style="font-size:20px;text-align:right">${st.v[1]}</div><div class="note" style="margin:4px 0 0">${st.v[2]}</div>
+  <button data-sk style="margin-top:8px">🔊 Réécouter</button></div><p><b>Que réponds-tu ?</b></p><div class="opts" style="grid-template-columns:minmax(0,1fr)">${shuffle(st.o.map((_,i)=>i)).map(i=>`<button data-s2="${i}"><b>${st.o[i][0]}</b><br><small>${st.o[i][1]}</small></button>`).join("")}</div><div class="msg" id="s2m"></div>`};
+const G2={pil:gPil,wudu:gWudu,dua:gDua,souk:gSouk};
+$("game").parentNode.addEventListener("click",e=>{const t=e.target;if(!g2)return;
+  if(t.closest("[data-g2again]")){const k=g2.k;g2=null;G2[k]();return}
+  const p=t.closest("[data-p2]");if(p&&!g2.done){g2.done=1;const ok=+p.dataset.p2===g2.a;p.classList.add(ok?"right":"wrong");if(ok){g2.sc++;addStar(1)}else $("game").querySelector(`[data-p2="${g2.a}"]`).classList.add("right");g2.n++;setTimeout(gPil,ok?900:1800);return}
+  const w=t.closest("[data-w2]");if(w){if(+w.dataset.w2===g2.step){g2.step++;if(g2.step>=WUDU.length)addStar(2);gWudu()}else{g2.err++;w.classList.add("wrong");setTimeout(()=>w.classList.remove("wrong"),600);$("w2m").textContent="Pas encore ! Quelle étape vient avant ?"}return}
+  const d=t.closest("[data-d2]");if(d&&!g2.done){g2.done=1;const ok=+d.dataset.d2===g2.a;d.classList.add(ok?"right":"wrong");if(ok){g2.sc++;addStar(1)}else $("game").querySelector(`[data-d2="${g2.a}"]`).classList.add("right");if(DUAS[g2.a][5])playList([{src:DUAS[g2.a][5],k:-1}]);g2.n++;setTimeout(gDua,ok?1400:2200);return}
+  if(t.closest("[data-sk]")){playList([{src:"audio/souk/"+g2.n+".mp3",k:-1}]);return}
+  const s2=t.closest("[data-s2]");if(s2&&!g2.done){const st=SOUK[g2.n],ok=+s2.dataset.s2===st.ok;s2.classList.add(ok?"right":"wrong");
+    if(ok){g2.done=1;addStar(1);$("s2m").textContent="Mzyan ! ✅";g2.n++;setTimeout(gSouk,1100)}else{g2.err++;$("s2m").textContent="Ce n'est pas la bonne réponse, réessaie !"}}},true);
 /* ================= PARENTS ================= */
 let confirmReset=false;
 const streak=()=>{let n=0,d=today();if(!P.days[d])d=addDays(d,-1);while(P.days[d]){n++;d=addDays(d,-1)}return n};
@@ -918,7 +1023,7 @@ const route=()=>{const h=location.hash.slice(1),v=views.includes(h)?h:"accueil";
   views.forEach(x=>$("v-"+x).classList.toggle("on",x===v));
   document.querySelectorAll("nav a").forEach(a=>a.toggleAttribute("aria-current",a.getAttribute("href")==="#"+v));
   if(v==="ecrire"){renderSeg();const go=()=>setupCanvas();try{document.fonts.load('700 100px "Noto Naskh Arabic"',"ب").then(go,go)}catch(e){go()}}
-  if(v==="parents"){confirmReset=false;renderPar()}if(v==="coran")renderRev();if(v==="darija")renderDar()};
+  if(v==="parents"){confirmReset=false;renderPar()}if(v==="coran")renderRev();if(v==="darija")renderDar();if(v==="ami"&&!amiStarted)amiStart()};
 head();renderGrid();renderDetail();renderLire();renderGameSeg();newGame();renderSurahs();renderSurah();renderRev();renderTaj();renderIsl();renderDar();
 addEventListener("hashchange",route);route();
 }
